@@ -1,0 +1,135 @@
+from django.db import models
+
+
+
+class LearningCenter(models.Model):
+    name = models.CharField(unique=True, max_length=20)  # Field name made lowercase.
+
+    def __str__(self):
+        return self.name
+
+class Level(models.Model):
+    name = models.CharField(max_length=20)  # Field name made lowercase.
+    learning_center = models.ForeignKey(LearningCenter, models.DO_NOTHING)  # Field name made lowercase.
+
+    def __str__(self):
+        return self.name
+    
+
+class Subject(models.Model):
+    name = models.CharField(max_length=20)  # Field name made lowercase.
+    learning_center = models.ForeignKey(LearningCenter, models.DO_NOTHING)  # Field name made lowercase.
+    code = models.CharField(max_length=20)  # Field name made lowercase.
+    
+    def __str__(self):
+        return self.name
+
+class Topic(models.Model):
+    name = models.CharField(max_length=20)  # Field name made lowercase.
+    subject = models.ForeignKey(Subject, models.DO_NOTHING)  # Field name made lowercase.
+    level = models.ForeignKey(Level, models.DO_NOTHING)  # Field name made lowercase.
+
+    def __str__(self):
+        return self.name
+    
+
+class Subtopic(models.Model):
+    name = models.CharField(max_length=20)  # Field name made lowercase.
+    topic = models.OneToOneField(Topic, models.DO_NOTHING, primary_key=True)  # Field name made lowercase. The composite primary key (TopicId, SubTopicId) found, that is not supported. The first column is selected.
+
+    def __str__(self):
+        return self.name
+    
+
+class Activity(models.Model):
+    name = models.CharField(db_column='ActivityName', max_length=40)  # Field name made lowercase.
+    date_from = models.DateField(db_column='ActivityDateFrom')  # Field name made lowercase.
+    date_to = models.DateField(db_column='ActivityDateTo')  # Field name made lowercase.
+    topic = models.OneToOneField(Subtopic, models.DO_NOTHING, primary_key=True)  # Field name made lowercase. The composite primary key (TopicId, SubTopicId, ActivityId) found, that is not supported. The first column is selected.
+    subtopic = models.ForeignKey(Subtopic, models.DO_NOTHING, related_name='topicsubtopicactivity_subtopicid_set')  # Field name made lowercase.
+
+    class Meta:
+        unique_together = (('topic', 'subtopic'),)
+
+    def __str__(self):
+        return self.name
+    
+
+class TimeStampedModel(models.Model):
+    created_at = models.DateTimeField(auto_now_add=True, null=True)
+    updated_at = models.DateTimeField(auto_now=True, null=True)
+
+    class Meta:
+        abstract = True
+
+
+# class LevelGroup(TimeStampedModel):
+#     class StatusEnumChoices(models.TextChoices):
+#         PRIMARY = 'PRIMARY'
+#         ORDINARY = 'ORDINARY'
+#         ADVANCED = 'ADVANCED'
+#     name = models.CharField(max_length=128, choices=StatusEnumChoices.choices)
+#     full = models.CharField(max_length=128)
+
+#     def __str__(self):
+#         return self.name
+
+# class Level(TimeStampedModel):
+#     name = models.CharField(max_length=256)
+#     rank = models.IntegerField(unique=True)
+#     level_group = models.ForeignKey(LevelGroup, on_delete=models.CASCADE)
+
+#     def __str__(self):
+#         return self.name
+
+
+class Question(TimeStampedModel):
+    ref = models.CharField(max_length=32)
+    level = models.ForeignKey(Level, on_delete=models.CASCADE)
+    certificate = models.CharField(max_length=32) # UCE, UACE, PLE
+    examiner = models.CharField(max_length=32) # UNEB
+    mark = models.IntegerField()
+    number = models.IntegerField()
+    paper_code = models.CharField(max_length=16)
+    paper_name = models.CharField(max_length=16)
+    paper_type = models.CharField(max_length=16)
+
+    section = models.CharField(max_length=1)
+    year = models.IntegerField()
+
+    term = models.IntegerField()
+    time = models.IntegerField()
+    question = models.TextField()
+    answer = models.TextField()
+
+    def __str__(self):
+        return self.ref
+
+class School(TimeStampedModel):
+    name = models.CharField(max_length=128)
+    location = models.CharField(max_length=256)
+    telephone = models.CharField(max_length=16, null=True, blank=True)
+    user = models.ForeignKey("auth.User", on_delete=models.SET_NULL, null=True)
+
+    def __str__(self):
+        return self.name
+    
+
+class Teacher(TimeStampedModel):
+    full_name = models.CharField(max_length=128)
+    telephone = models.CharField(max_length=16, null=True, blank=True)
+    # schools =
+    user = models.ForeignKey("auth.User", on_delete=models.SET_NULL, null=True)
+    # classes = 
+
+    def __str__(self):
+        return self.full_name
+
+class Student(TimeStampedModel):
+    full_name = models.CharField(max_length=128)
+    telephone = models.CharField(max_length=16, null=True, blank=True)
+    school = models.ForeignKey(School, on_delete=models.CASCADE)
+    user = models.ForeignKey("auth.User", on_delete=models.SET_NULL, null=True)
+
+    def __str__(self):
+        return self.full_name

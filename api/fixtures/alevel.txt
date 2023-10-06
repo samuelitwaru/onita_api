@@ -1,0 +1,132 @@
+P210/3 European History (1789-1970)
+P210/4 History: World Affairs since 1939
+P425/1 Pure Mathematics
+P210/1 History: National Movements & the New States 
+P210/2 History: Economic and Social History of East Africa
+P425/2 Applied Mathematics
+
+P220/1 Economics
+P525/3 Chemistry (Practical)
+ 
+P220/2 Economics
+P250/1 Geography
+P250/2 Geography
+P250/3 Geography
+S101/1 General Paper
+
+P210/5 Theory of Government and Constitutional Development
+P210/6 History of Africa (1855-1914)
+P510/1 Physics
+
+P310/1 Lit in English: Prose & Poetry 
+P320/1 Fasihi ya Kiswahili:Nathari na Ushairi 
+
+P510/2 Physics
+
+P235/1 IRE: The Glorious Qur’an
+P245/1 CRE: The Old Testament
+P530/3 Biology Practical 
+P620/2 Music: Aural
+P235/2 IRE: Hadith & Fiqh
+P245/2 CRE: The New Testament
+P235/3 IRE: History of Islam 
+P245/4 CRE: Social & Ethical Issues 
+P530/1 Biology
+
+
+P235/4 IRE: Islam in Africa
+P245/3 CRE: Christianity in East Africa 
+P530/2 Biology
+
+P230/1 Entrepreneurship Education 
+P525/1 Chemistry
+
+P230/2 Entrepreneurship Education 
+P525/2 Chemistry
+
+P310/2 Lit. in English: Plays 
+P320/2 Fasihi ya Kiswahili :Tamthilia 
+P510/3 Physics (Practical)
+
+P615/1 Art: Drawing / Painting from
+Nature & Still-Life * (Issue at noon)
+P310/3 Lit in English: Novels 
+P320/3 Fasihi ya Kiswahili:Riwaya
+P515/3 Agric Principles & Practices(Pract.)
+S475/1 Subsidiary Mathematics 
+S850/1 Subsidiary ICT
+
+P340/1 German: Essay 
+P640/2 Foods and Nutrition
+S850/2 Subsidiary ICT (Practical)
+P230/3 Entrepreneurship Education 
+P330/2 French: Language & Reading Comprehension
+P340/2 German: Reading comprehension & commentary
+P350/1 Latin: Prose Composition 
+P370/1 Arabic: Grammar, Morphology & Composition
+P615/4 Art: Craft B Studio Technology (Theory)
+P720/3 Building Construction Theory
+
+P330/3 French: Lit & Background Studies
+P340/3 German: Prescribed texts
+P350/2 Latin: Unprepared Translation
+P515/1 Agriculture Principles & Practice
+P615/5 Art: Historical and Critical
+P630/1 Clothing and Textiles
+S850/3 Subsidiary ICT (Practical)
+P330/4 French: Composition & Translation
+P350/3 Latin prescribed Texts
+P370/2 Arabic
+P515/2 Agric: Principles & Practice
+P620/4 Music Literature
+
+P615/2 Study of a Living Person (Alt A) & Imaginative Composition in colour (Alt B) Planning/(Sketching session)
+P640/1 Foods and Nutrition 
+P730/1 Woodwork
+P740/2 Engineering Metalwork
+P360/1 Luganda 
+P361/1 Leb Acoli 
+P362/1 Leb Lango 
+P363/1 Lugbarati
+P364/1 Runyakore/Rukiga Grammar 
+P367/1 Ateso Culture 
+P366/1 Lusoga
+P368/1 Dhopadhola 
+P369/1 Runyoro/Rutooro 
+P371/1 Lumasaaba
+P615/2 Art: Imaginative Composition in Colour (Alt B) Test* (Issue at noon)
+P620/3 Music: Harmony & Composition
+P730/2 Woodwork
+
+
+P360/2 Luganda 
+P361/2 Leb Acoli 
+P362/2 Leb Lango
+P363/2 Lugbarati Translation
+P364/2 Runyankore/Rukiga Composition
+P366/2 Lusoga Comprehension
+P367/2 Ateso and Summary 
+P368/2 Dhopadhola
+P369/2 Runyoro/Rutooro
+P371/2 Lumasaaba
+P710/1 Geometrical & Mech. Drawing 
+P720/1 Geometrical & Build. Drawing 
+P730/3 Woodwork
+P360/3 Luganda: Literature 
+P361/3 Leb Acoli: Literature 
+P362/3 Leb Lango: Literature 
+P363/3 LugbaraTi: Literature
+P364/3 Runyankore/Rukiga: Literature 
+P366/3 Lusoga: Literature
+P367/3 Ateso: Literature 
+P368/3 Dhopadhola: Literature
+P369/3 Runyoro/Rutooro: Literature 
+P370/3 Arabic: Literature, Prose, Poetry Novels & Plays
+P371/3 Lumasaaba: Literature 
+P710/2 Geometrical & Mech. Drawing 
+P720/2 Geometrical & Build. Drawing
+P615/3 Art: Craft A Graphic Design (Planning)
+P740/1 Engineering Metalwork
+P615/3 Art: Craft A Graphic Design (Test)
+
+
