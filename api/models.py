@@ -1,4 +1,5 @@
 from django.db import models
+from quiz.models import Test
 
 
 
@@ -7,6 +8,7 @@ class LearningCenter(models.Model):
 
     def __str__(self):
         return self.name
+
 
 class Level(models.Model):
     name = models.CharField(max_length=20)  # Field name made lowercase.
@@ -24,10 +26,12 @@ class Subject(models.Model):
     def __str__(self):
         return self.name
 
+
 class Topic(models.Model):
     name = models.CharField(max_length=20)  # Field name made lowercase.
     subject = models.ForeignKey(Subject, models.DO_NOTHING)  # Field name made lowercase.
     level = models.ForeignKey(Level, models.DO_NOTHING)  # Field name made lowercase.
+    test = models.ForeignKey(Test, models.DO_NOTHING)
 
     def __str__(self):
         return self.name
@@ -63,26 +67,6 @@ class TimeStampedModel(models.Model):
         abstract = True
 
 
-# class LevelGroup(TimeStampedModel):
-#     class StatusEnumChoices(models.TextChoices):
-#         PRIMARY = 'PRIMARY'
-#         ORDINARY = 'ORDINARY'
-#         ADVANCED = 'ADVANCED'
-#     name = models.CharField(max_length=128, choices=StatusEnumChoices.choices)
-#     full = models.CharField(max_length=128)
-
-#     def __str__(self):
-#         return self.name
-
-# class Level(TimeStampedModel):
-#     name = models.CharField(max_length=256)
-#     rank = models.IntegerField(unique=True)
-#     level_group = models.ForeignKey(LevelGroup, on_delete=models.CASCADE)
-
-#     def __str__(self):
-#         return self.name
-
-
 class Question(TimeStampedModel):
     ref = models.CharField(max_length=32)
     level = models.ForeignKey(Level, on_delete=models.CASCADE)
@@ -104,6 +88,7 @@ class Question(TimeStampedModel):
 
     def __str__(self):
         return self.ref
+
 
 class School(TimeStampedModel):
     name = models.CharField(max_length=128)
@@ -128,8 +113,9 @@ class Teacher(TimeStampedModel):
 class Student(TimeStampedModel):
     full_name = models.CharField(max_length=128)
     telephone = models.CharField(max_length=16, null=True, blank=True)
-    school = models.ForeignKey(School, on_delete=models.CASCADE)
-    user = models.ForeignKey("auth.User", on_delete=models.SET_NULL, null=True)
+    school = models.ForeignKey(School, on_delete=models.SET_NULL, null=True)
+    user = models.OneToOneField("auth.User", on_delete=models.SET_NULL, null=True)
+    level = models.ForeignKey(Level, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.full_name

@@ -1,0 +1,94 @@
+[
+    {
+      "model": "api.subject",
+      "pk": 1,
+      "fields": {
+        "code": "1",
+        "name": "Mathematics",
+        "learning_center": 1
+      }
+    },
+    {
+        "model": "api.subject",
+        "pk": 2,
+        "fields": {
+          "code": "2",
+          "name": "English",
+          "learning_center": 1
+        }
+    },
+    {
+        "model": "api.subject",
+        "pk": 3,
+        "fields": {
+          "code": "3",
+          "name": "Social Studies",
+          "learning_center": 1
+        }
+    },
+    {
+        "model": "api.subject",
+        "pk": 4,
+        "fields": {
+          "code": "4",
+          "name": "Science",
+          "learning_center": 1
+        }
+    },
+
+    {
+        "model": "api.subject",
+        "pk": 5,
+        "fields": {
+          "code": "535/1",
+          "name": "Physics",
+          "learning_center": 1
+        }
+      },
+      {
+          "model": "api.subject",
+          "pk": 6,
+          "fields": {
+            "code": "545/1",
+            "name": "Chemistry",
+            "learning_center": 1
+          }
+      },
+      {
+          "model": "api.subject",
+          "pk": 7,
+          "fields": {
+            "code": "553/1",
+            "name": "Biology",
+            "learning_center": 1
+          }
+      },
+      {
+          "model": "api.subject",
+          "pk": 8,
+          "fields": {
+            "code": "240/1",
+            "name": "Geography",
+            "learning_center": 1
+          }
+      },
+
+      {
+          "model": "api.subject",
+          "pk": 9,
+          "fields": {
+            "code": "241/1",
+            "name": "History",
+            "learning_center": 1
+          }
+        },
+        {
+            "model": "api.subject",
+            "pk": 10,
+            "fields": {
+              "code": "112/1",
+              "name": "English",
+              "learning_center": 1
+            }
+        }
+  ]
