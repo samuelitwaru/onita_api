@@ -1,0 +1,23 @@
+[
+    {
+      "model": "api.learning_center",
+      "pk": 1,
+      "fields": {
+        "name": "Primary"
+      }
+    },
+    {
+        "model": "api.learning_center",
+        "pk": 2,
+        "fields": {
+            "name": "Ordinary"
+        }
+    },
+    {
+        "model": "api.learning_center",
+        "pk": 3,
+        "fields": {
+            "name": "Advanced"
+        }
+    }
+]
