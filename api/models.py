@@ -31,7 +31,7 @@ class Topic(models.Model):
     name = models.CharField(max_length=20)  # Field name made lowercase.
     subject = models.ForeignKey(Subject, models.DO_NOTHING)  # Field name made lowercase.
     level = models.ForeignKey(Level, models.DO_NOTHING)  # Field name made lowercase.
-    test = models.ForeignKey(Test, models.DO_NOTHING)
+    test = models.ForeignKey(Test, models.SET_NULL, null=True)
 
     def __str__(self):
         return self.name

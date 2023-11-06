@@ -1,6 +1,8 @@
+from account.filters import BaseFilter
 from rest_framework import viewsets
 from .models import *
 from .serializers import *
+from account.serializers import SchoolSerializer, TeacherSerializer, StudentSerializer
 
 
 class LearningCenterViewSet(viewsets.ModelViewSet):
@@ -19,6 +21,12 @@ class SubjectViewSet(viewsets.ModelViewSet):
     queryset = Subject.objects.all()
     serializer_class = SubjectSerializer
     permission_classes = []
+    
+    def get_queryset(self):
+        params = self.request.query_params
+        f = BaseFilter(self.queryset, params)
+        queryset = f.filter()
+        return queryset
 
 
 class TopicViewSet(viewsets.ModelViewSet):
@@ -61,6 +69,12 @@ class StudentViewSet(viewsets.ModelViewSet):
     queryset = Student.objects.all()
     serializer_class = StudentSerializer
     permission_classes = []
+
+    def get_queryset(self):
+        params = self.request.query_params
+        f = BaseFilter(self.queryset, params)
+        queryset = f.filter()
+        return queryset
 
 
 

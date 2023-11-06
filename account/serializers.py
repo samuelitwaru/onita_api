@@ -3,8 +3,7 @@ from django.contrib.auth.models import Group, User
 from rest_framework import serializers
 from django.contrib.auth import authenticate
 from rest_framework.authtoken.serializers import AuthTokenSerializer
-from api.models import Level, Student, Teacher
-
+from api.models import Level, School, Student, Teacher
 from api.serializers import LevelSerializer
 
 
@@ -21,6 +20,26 @@ class UserSerializer(serializers.ModelSerializer):
         user = User.objects.create_user(**validated_data)
         return user
 
+
+class SchoolSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = School
+        fields = '__all__'
+
+
+class TeacherSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Teacher
+        fields = '__all__'
+
+
+class StudentSerializer(serializers.ModelSerializer):
+    user = UserSerializer(read_only=True)   
+    level = LevelSerializer(read_only=True)   
+    class Meta:
+        model = Student
+        fields = '__all__'
+
     
 class StudentUserSerializer(serializers.Serializer):
     first_name = serializers.CharField()
@@ -30,6 +49,11 @@ class StudentUserSerializer(serializers.Serializer):
     level = serializers.ChoiceField(choices=[(level.id, level.name) for level in Level.objects.all()])
     password = serializers.CharField(required=True)
     confirm_password = serializers.CharField(required=True)
+
+    def validate_email(self, value):
+        if User.objects.filter(email=value).first():
+            raise serializers.ValidationError(f"User with the email, '{value}' already exists")
+        return value
 
     def create(self, validated_data):
         user = User(
@@ -49,6 +73,9 @@ class StudentUserSerializer(serializers.Serializer):
         student.save()
         return student
 
+class LoginSerializer(serializers.Serializer):
+    username = serializers.CharField()
+    password = serializers.CharField()
 
 class TeacherUserSerializer(serializers.Serializer):
     first_name = serializers.CharField()

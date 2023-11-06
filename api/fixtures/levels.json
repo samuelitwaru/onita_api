@@ -1,0 +1,52 @@
+[
+    {
+      "model": "api.level",
+      "pk": 1,
+      "fields": {
+        "name": "Senior 1",
+        "learning_center": 2
+      }
+    },
+    {
+        "model": "api.level",
+        "pk": 2,
+        "fields": {
+          "name": "Senior 2",
+          "learning_center": 2
+        }
+      },
+      {
+        "model": "api.level",
+        "pk": 3,
+        "fields": {
+          "name": "Senior 3",
+          "learning_center": 2
+        }
+      },
+      {
+        "model": "api.level",
+        "pk": 4,
+        "fields": {
+          "name": "Senior 4",
+          "learning_center": 2
+        }
+      },
+      {
+        "model": "api.level",
+        "pk": 5,
+        "fields": {
+          "name": "Senior 5",
+          "learning_center": 3
+        }
+      },
+      {
+        "model": "api.level",
+        "pk": 6,
+        "fields": {
+          "name": "Senior 6",
+          "learning_center": 3
+        }
+      }
+              
+  
+  ]

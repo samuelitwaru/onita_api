@@ -42,7 +42,7 @@
         "fields": {
           "code": "535/1",
           "name": "Physics",
-          "learning_center": 1
+          "learning_center": 2
         }
       },
       {
@@ -51,7 +51,7 @@
           "fields": {
             "code": "545/1",
             "name": "Chemistry",
-            "learning_center": 1
+            "learning_center": 2
           }
       },
       {
@@ -60,7 +60,7 @@
           "fields": {
             "code": "553/1",
             "name": "Biology",
-            "learning_center": 1
+            "learning_center": 2
           }
       },
       {
@@ -69,7 +69,7 @@
           "fields": {
             "code": "240/1",
             "name": "Geography",
-            "learning_center": 1
+            "learning_center": 2
           }
       },
 
@@ -79,7 +79,7 @@
           "fields": {
             "code": "241/1",
             "name": "History",
-            "learning_center": 1
+            "learning_center": 2
           }
         },
         {
@@ -88,7 +88,7 @@
             "fields": {
               "code": "112/1",
               "name": "English",
-              "learning_center": 1
+              "learning_center": 2
             }
         }
   ]

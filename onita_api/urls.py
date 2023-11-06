@@ -18,6 +18,7 @@ from django.contrib import admin
 from django.urls import path, include
 from api.urls import *
 from account.urls import *
+from quiz.urls import *
 from . import router
 
 urlpatterns = [
