@@ -41,8 +41,7 @@ class Subtopic(models.Model):
     from ckeditor.fields import RichTextField
     name = models.CharField(max_length=20)  # Field name made lowercase.
     topic = models.ForeignKey(Topic, on_delete=models.CASCADE)  # Field name made lowercase. The composite primary key (TopicId, SubTopicId) found, that is not supported. The first column is selected.
-    content = models.TextField()
-    content2 = RichTextField()
+    content = RichTextField()
     
     def __str__(self):
         return self.name
