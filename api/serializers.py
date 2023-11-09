@@ -15,30 +15,35 @@ class LevelSerializer(serializers.ModelSerializer):
         fields = '__all__'
     
 
-class SubjectSerializer(serializers.ModelSerializer):
-    
-    class Meta:
-        model = Subject
-        fields = '__all__'
-
-
-class TopicSerializer(serializers.ModelSerializer):
-    
-    class Meta:
-        model = Topic
-        fields = '__all__'
-
 class SubtopicSerializer(serializers.ModelSerializer):
+    # topic = serializers.ChoiceField(choices=[(topic.id, topic.name) for topic in Topic.objects.all()])
+    topic_name = serializers.CharField(source='topic.name', read_only=True)
     class Meta:
         model = Subtopic
         fields = '__all__'
 
 
-class ActivitySerializer(serializers.ModelSerializer):
-    
+class TopicSerializer(serializers.ModelSerializer):
+    subtopics = SubtopicSerializer(many=True, source='subtopic_set', read_only=False)
     class Meta:
-        model = Activity
+        model = Topic
         fields = '__all__'
+
+
+class SubjectSerializer(serializers.ModelSerializer):
+    topics = TopicSerializer(many=True, read_only=True)
+    class Meta:
+        model = Subject
+        fields = '__all__'
+
+
+
+
+# class ActivitySerializer(serializers.ModelSerializer):
+    
+#     class Meta:
+#         model = Activity
+#         fields = '__all__'
 
 
 class QuestionSerializer(serializers.ModelSerializer):

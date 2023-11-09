@@ -41,10 +41,10 @@ class SubtopicViewSet(viewsets.ModelViewSet):
     permission_classes = []
 
 
-class ActivityViewSet(viewsets.ModelViewSet):
-    queryset = Activity.objects.all()
-    serializer_class = ActivitySerializer
-    permission_classes = []
+# class ActivityViewSet(viewsets.ModelViewSet):
+#     queryset = Activity.objects.all()
+#     serializer_class = ActivitySerializer
+#     permission_classes = []
 
 
 class QuestionViewSet(viewsets.ModelViewSet):

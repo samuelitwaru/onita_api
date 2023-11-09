@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block body %}
+
+<h3>{{subtopic.topic.subject}}/{{subtopic.topic}}/{{subtopic.name}}</h3>
+
+
+<form method="POST">
+    {% csrf_token %}
+    {{ form.media }}
+    {{ form.as_p }}
+    <input class="btn btn-primary" type="submit" value="SAVE">
+</form>
+
+{% endblock %}

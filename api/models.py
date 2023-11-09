@@ -28,8 +28,8 @@ class Subject(models.Model):
 
 
 class Topic(models.Model):
-    name = models.CharField(max_length=20)  # Field name made lowercase.
-    subject = models.ForeignKey(Subject, models.DO_NOTHING)  # Field name made lowercase.
+    name = models.CharField(max_length=128)  # Field name made lowercase.
+    subject = models.ForeignKey(Subject, models.DO_NOTHING, related_name='topics')  # Field name made lowercase.
     level = models.ForeignKey(Level, models.DO_NOTHING)  # Field name made lowercase.
     test = models.ForeignKey(Test, models.SET_NULL, null=True)
 
@@ -38,25 +38,28 @@ class Topic(models.Model):
     
 
 class Subtopic(models.Model):
+    from ckeditor.fields import RichTextField
     name = models.CharField(max_length=20)  # Field name made lowercase.
-    topic = models.OneToOneField(Topic, models.DO_NOTHING, primary_key=True)  # Field name made lowercase. The composite primary key (TopicId, SubTopicId) found, that is not supported. The first column is selected.
-
+    topic = models.ForeignKey(Topic, on_delete=models.CASCADE)  # Field name made lowercase. The composite primary key (TopicId, SubTopicId) found, that is not supported. The first column is selected.
+    content = models.TextField()
+    content2 = RichTextField()
+    
     def __str__(self):
         return self.name
     
 
-class Activity(models.Model):
-    name = models.CharField(db_column='ActivityName', max_length=40)  # Field name made lowercase.
-    date_from = models.DateField(db_column='ActivityDateFrom')  # Field name made lowercase.
-    date_to = models.DateField(db_column='ActivityDateTo')  # Field name made lowercase.
-    topic = models.OneToOneField(Subtopic, models.DO_NOTHING, primary_key=True)  # Field name made lowercase. The composite primary key (TopicId, SubTopicId, ActivityId) found, that is not supported. The first column is selected.
-    subtopic = models.ForeignKey(Subtopic, models.DO_NOTHING, related_name='topicsubtopicactivity_subtopicid_set')  # Field name made lowercase.
+# class Activity(models.Model):
+#     name = models.CharField(max_length=128)  # Field name made lowercase.
+#     date_from = models.DateField()  # Field name made lowercase.
+#     date_to = models.DateField()  # Field name made lowercase.
+#     topic = models.OneToOneField(Subtopic, on_delete=models.CASCADE)  # Field name made lowercase. The composite primary key (TopicId, SubTopicId, ActivityId) found, that is not supported. The first column is selected.
+#     subtopic = models.ForeignKey(Subtopic, on_delete=models.CASCADE, related_name='topicsubtopicactivity_subtopicid_set')  # Field name made lowercase.
 
-    class Meta:
-        unique_together = (('topic', 'subtopic'),)
+#     class Meta:
+#         unique_together = (('topic', 'subtopic'),)
 
-    def __str__(self):
-        return self.name
+#     def __str__(self):
+#         return self.name
     
 
 class TimeStampedModel(models.Model):

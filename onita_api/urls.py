@@ -24,5 +24,6 @@ from . import router
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include(router.urls)),
+    path('', include('api.urls')),
     # path('account/', include(router.urls)),
 ]
