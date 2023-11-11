@@ -40,6 +40,12 @@ class SubtopicViewSet(viewsets.ModelViewSet):
     serializer_class = SubtopicSerializer
     permission_classes = []
 
+    def get_queryset(self):
+        params = self.request.query_params
+        f = BaseFilter(self.queryset, params)
+        queryset = f.filter()
+        return queryset
+
 
 # class ActivityViewSet(viewsets.ModelViewSet):
 #     queryset = Activity.objects.all()

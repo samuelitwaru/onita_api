@@ -6,18 +6,18 @@
 	<nav aria-label="breadcrumb">
 		<ol class="breadcrumb">
 		  <li class="breadcrumb-item"><a href="">Home</a></li>
-		  <li class="breadcrumb-item active" aria-current="page">Subjects</li>
+		  <li class="breadcrumb-item active" aria-current="page">Tests</li>
 		</ol>
 	</nav>
 </div>
+
 <hr class='mb-4'/>
 
-<table class="table">
+<table class="table table-small table-bordered">
 	<tbody>
-        {% for subject in subjects %}
+        {% for test in tests %}
 		<tr>
-			<td scope="">{{subject.code}}</td>
-			<td scope="row"><a href="{% url 'get_subject' id=subject.id %}">{{subject.name}}</a></td>
+			<td scope="row"><a href="{% url 'get_test' id=test.id %}">{{test.name}}</a></td>
 		</tr>
         {% endfor %}
 	</tbody>

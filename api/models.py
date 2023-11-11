@@ -26,6 +26,8 @@ class Subject(models.Model):
     def __str__(self):
         return self.name
 
+    def level_topics(self, level_id):
+        pass
 
 class Topic(models.Model):
     name = models.CharField(max_length=128)  # Field name made lowercase.
@@ -42,6 +44,10 @@ class Subtopic(models.Model):
     name = models.CharField(max_length=20)  # Field name made lowercase.
     topic = models.ForeignKey(Topic, on_delete=models.CASCADE)  # Field name made lowercase. The composite primary key (TopicId, SubTopicId) found, that is not supported. The first column is selected.
     content = RichTextField()
+    order = models.IntegerField(null=True)
+
+    class Meta:
+        unique_together = (('topic','order'))
     
     def __str__(self):
         return self.name

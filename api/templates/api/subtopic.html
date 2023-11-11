@@ -2,8 +2,21 @@
 
 {% block body %}
 
-<h3>{{subtopic.topic.subject}}/{{subtopic.topic}}/{{subtopic.name}}</h3>
+<div class='pt-2'>
+	<nav aria-label="breadcrumb">
+		<ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="">Home</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'subjects' %}">Subjects</a></li>
+            {% with subject=subtopic.topic.subject %}
+            <li class="breadcrumb-item"><a href="{% url 'get_subject' id=subject.id %}">{{subject}}</a></li>
+            {% comment %} <li class="breadcrumb-item"><a href="{% url 'get_subject' id=1 %}">{{subtopic.topic}}</a></li> {% endcomment %}
+            <li class="breadcrumb-item active" aria-current="page">{{subtopic}}</li>
+            {% endwith %}
+		</ol>
+	</nav>
+</div>
 
+<hr class='mb-4'/>
 
 <form method="POST">
     {% csrf_token %}

@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block body %}
+
+<div class='pt-2'>
+	<nav aria-label="breadcrumb">
+		<ol class="breadcrumb">
+		  <li class="breadcrumb-item"><a href="">Home</a></li>
+		  <li class="breadcrumb-item"><a href="{% url 'tests' %}">Tests</a></li>
+		  <li class="breadcrumb-item active" aria-current="page">{{test.name}}</li>
+		</ol>
+	</nav>
+</div>
+
+<hr class='mb-4'/>
+
+<div>
+    {% for question in test.question_set.all %}
+    <div class="card my-2">
+        <div class="card-body">
+            <div class="card-title my-aut d-flex align-items-center">
+                <div>{{question.text|safe}}</div>
+                <a href="{% url 'get_question' id=test.id question_id=question.id %}" class='mb-3 px-2'><i class="fa fa-pen-to-square" aria-hidden="true"></i></a>
+            </div>
+            <table class="table table-sm table-bordered border-dark">
+                <tbody>
+                    {% for choice in question.choices.all %}
+                    <tr>
+                        <td class='d-flex'>
+                            {{choice.text|safe}}
+                        </td>
+                        <td>
+                            <a href="{% url 'get_choice' id=test.id question_id=question.id choice_id=choice.id %}"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+                        </td>
+                        <td>
+                            {% if choice.is_correct %}
+                            <i class="fa fa-check-square" aria-hidden="true"></i>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

@@ -1,18 +1,25 @@
+from typing import Any
+from django.db.models.query import QuerySet
 from django.shortcuts import render
 from django.contrib import messages
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
-from .models import Subject, Subtopic
+from .models import Level, Subject, Subtopic
 from .forms import SubtopicForm
 
 
 class SubjectList(ListView):
     model = Subject
     context_object_name = 'subjects'
+    def get_queryset(self) -> QuerySet[Any]:
+        print('hello')
+        return super().get_queryset()
+
 
 def get_subject(request, id):
     subject = Subject.objects.get(id=id)
-    context = {'subject':subject}
+    levels = Level.objects.all()
+    context = {'subject':subject, 'levels':levels}
     return render(request, 'api/subject.html', context)
 
 def get_subtopic(request, id, topic_id, subtopic_id):

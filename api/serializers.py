@@ -1,5 +1,7 @@
 from rest_framework import serializers
 
+from quiz.serializers import TestSerializer
+
 from .models import *
 
 
@@ -24,7 +26,8 @@ class SubtopicSerializer(serializers.ModelSerializer):
 
 
 class TopicSerializer(serializers.ModelSerializer):
-    subtopics = SubtopicSerializer(many=True, source='subtopic_set', read_only=False)
+    subtopics = SubtopicSerializer(many=True, source='subtopic_set', read_only=True)
+    test = TestSerializer(read_only=True)
     class Meta:
         model = Topic
         fields = '__all__'
