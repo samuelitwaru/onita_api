@@ -20,6 +20,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.authtoken.models import Token
 from django.contrib.auth import authenticate, login, logout
+from account.filters import BaseFilter
 
 
 
@@ -30,8 +31,9 @@ class UserViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         params = self.request.query_params
-        if params:
-            queryset = queryset.filter(**params.dict())
+        f = BaseFilter(self.queryset, params)
+        queryset = f.filter()
+        return queryset
     
     @action(detail=False, methods=['POST'], name='login', url_path=r'login', serializer_class=LoginSerializer)
     def login(self, request, *args, **kwargs):
