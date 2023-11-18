@@ -3,7 +3,9 @@ from rest_framework import viewsets
 from .models import *
 from .serializers import *
 from account.serializers import SchoolSerializer, TeacherSerializer, StudentSerializer
-
+from rest_framework.decorators import api_view, permission_classes, action
+from rest_framework.response import Response
+from rest_framework import status
 
 class LearningCenterViewSet(viewsets.ModelViewSet):
     queryset = LearningCenter.objects.all()
@@ -82,6 +84,67 @@ class StudentViewSet(viewsets.ModelViewSet):
         queryset = f.filter()
         return queryset
 
+class StudentAnswerViewSet(viewsets.ModelViewSet):
+    queryset = StudentAnswer.objects.all()
+    serializer_class = StudentAnswerSerializer
+    permission_classes = []
+
+    # def get_queryset(self):
+    #     params = self.request.query_params
+    #     f = BaseFilter(self.queryset, params)
+    #     queryset = f.filter()
+    #     return queryset
+    
+    @action(detail=False, methods=['POST'], name='submit_single_choice_answer', url_path=r'submit_single_choice_answer', serializer_class=StudentAnswerSerializer)
+    def submit_single_choice_answer(self, request, *args, **kwargs):
+        serializer = StudentAnswerSerializer(data=request.data)
+        if serializer.is_valid():
+            data = request.data
+            student_id = data['student']
+            choice_id = data['choice']
+            question_id = data['question']
+            choice = Choice.objects.get(id=choice_id)
+            answer = StudentAnswer.objects.filter(question_id=question_id, student_id=student_id).first()
+            if answer:
+                answer.choice = choice
+            else:
+                answer = StudentAnswer.objects.create(**{
+                    'student_id': data['student'],
+                    'choice_id': data['choice'],
+                    'question_id': data['question'],
+                })
+            answer.save()
+            answer_serilizer = StudentAnswerSerializer(answer)
+            return Response(answer_serilizer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+    @action(detail=False, methods=['DELETE'], name='delete_answers', url_path=r'delete_answers')
+    def delete_answers(self, request, *args, **kwargs):
+        params = request.query_params
+        answers_to_delete = StudentAnswer.objects.filter(**params.dict())
+        answers_to_delete.delete()
+        return Response(status=status.HTTP_200_OK)
+    
+    @action(detail=False, methods=['GET'], name='submit_answers', url_path=r'submit_answers')
+    def submit_answers(self, request, *args, **kwargs):
+        params = request.query_params
+        answers = StudentAnswer.objects.filter(**params.dict()).all()
+        report = dict()
+        print(answers)
+        for answer in answers:
+            if report.get(answer.question.id):
+                report[answer.question.id]['answers'].append(answer.choice.is_correct)
+            else:
+                report[answer.question.id] = dict()
+                report[answer.question.id]['answers'] = [answer.choice.is_correct]
+                report[answer.question.id]['question'] = answer.question.text
+        return Response(report, status=status.HTTP_200_OK)
+        
+
+class StudentTopicProgressViewSet(viewsets.ModelViewSet):
+    queryset = StudentTopicProgress.objects.all()
+    serializer_class = StudentTopicProgressSerializer
+    permission_classes = []
 
 
 

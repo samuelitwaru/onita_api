@@ -55,3 +55,14 @@ class QuestionSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class StudentAnswerSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = StudentAnswer
+        fields = '__all__'
+
+
+class StudentTopicProgressSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = StudentTopicProgress
+        fields = '__all__'
+

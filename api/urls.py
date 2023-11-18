@@ -13,6 +13,8 @@ router.register(r'subtopics', SubtopicViewSet)
 router.register(r'questions', QuestionViewSet)
 router.register(r'schools', SchoolViewSet)
 router.register(r'students', StudentViewSet)
+router.register(r'student-answers', StudentAnswerViewSet)
+router.register(r'student-topic-progresses', StudentTopicProgressViewSet)
 
 
 from django.urls import path

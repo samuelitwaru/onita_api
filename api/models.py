@@ -1,5 +1,5 @@
 from django.db import models
-from quiz.models import Test
+from quiz.models import Choice, Test, Question as QuizQuestion
 
 
 
@@ -127,3 +127,21 @@ class Student(TimeStampedModel):
 
     def __str__(self):
         return self.full_name
+    
+class StudentAnswer(TimeStampedModel):
+    student = models.ForeignKey(Student, on_delete=models.CASCADE)
+    question = models.ForeignKey(QuizQuestion, on_delete=models.CASCADE)
+    choice = models.ForeignKey(Choice, on_delete=models.CASCADE)
+
+    class Meta:
+        unique_together = ('question', 'student', 'choice')
+
+
+class StudentTopicProgress(models.Model):
+    student = models.ForeignKey(Student, on_delete=models.CASCADE)
+    subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
+    topic = models.ForeignKey(Topic, on_delete=models.CASCADE)
+
+    class Meta:
+        unique_together = ('student', 'subject')
+    
