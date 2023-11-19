@@ -162,12 +162,25 @@ class UpdateUserSerializer(serializers.Serializer):
     token = serializers.CharField()
     first_name = serializers.CharField()
     last_name = serializers.CharField()
-    phone = serializers.IntegerField()
-    faculty = serializers.IntegerField()
-    department = serializers.IntegerField()
-    qualification = serializers.IntegerField()
-
+    telephone = serializers.IntegerField()
+    
 class PasswordChangeSerializer(serializers.Serializer):
     old_password = serializers.CharField(required=True)
     new_password = serializers.CharField(required=True)
     
+class PasswordResetSerializer(serializers.Serializer):
+    email = serializers.CharField(required=True)
+
+    def validate(self, attrs):
+        data = super().validate(attrs)
+        errors = {}
+        if not User.objects.filter(username=data.get('email')).first():
+            errors['email'] = ["This email does not exist."]
+        if errors:
+            raise serializers.ValidationError(errors)
+        return data
+
+class SetPasswordSerializer(serializers.Serializer):
+    token = serializers.CharField(required= True)
+    new_password = serializers.CharField(required=True)
+    confirm_password = serializers.CharField(required=True)

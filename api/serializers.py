@@ -70,6 +70,6 @@ class StudentTopicProgressSerializer(serializers.ModelSerializer):
 class UpdateStudentSerializer(serializers.Serializer):
     first_name = serializers.CharField()
     last_name = serializers.CharField()
-    phone = serializers.IntegerField()
+    telephone = serializers.IntegerField()
     email = serializers.EmailField()
 

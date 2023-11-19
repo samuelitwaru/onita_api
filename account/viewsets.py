@@ -8,7 +8,10 @@ from django.contrib.auth.models import User
 from django.contrib.auth import update_session_auth_hash
 from account.serializers import StudentSerializer, TeacherSerializer
 from account.utils.core import get_user_from_bearer_token
-from .serializers import LoginSerializer, PasswordChangeSerializer, ProposalTeamSerializer, StudentUserSerializer, TeacherUserSerializer, UserSerializer
+from account.utils.mails import send_html_email
+from api.models import Student
+from api.serializers import UpdateStudentSerializer
+from .serializers import LoginSerializer, PasswordChangeSerializer, PasswordResetSerializer, ProposalTeamSerializer, SetPasswordSerializer, StudentUserSerializer, TeacherUserSerializer, UserSerializer
 # from rest_framework.permissions import IsAuthenticated
 # from .serializers import CustomAuthTokenSerializer
 # from rest_framework.authtoken.views import ObtainAuthToken
@@ -22,6 +25,7 @@ from rest_framework import status
 from rest_framework.authtoken.models import Token
 from django.contrib.auth import authenticate, login, logout
 from account.filters import BaseFilter
+from django.conf import settings
 
 
 
@@ -60,6 +64,27 @@ class UserViewSet(viewsets.ModelViewSet):
             return Response(student_serilizer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+    @action(detail=True, methods=['PUT'], name='update_student', url_path=r'student', serializer_class=UpdateStudentSerializer)
+    def update_student_user(self, request, pk, *args, **kwargs):
+        serializer = UpdateStudentSerializer(data=request.data)
+        if serializer.is_valid():
+            data = serializer.validated_data
+            user = User.objects.get(id=pk)
+            student = Student.objects.filter(user=user).first()
+            user.first_name = data['first_name']
+            user.last_name = data['last_name']
+            user.last_name = data['last_name']
+            user.email = data['email']
+            user.username = data['email']
+            student.telephone = data['telephone']
+            student.full_name = f'{data["first_name"]} {data["last_name"]}'
+            user.save()
+            student.save()
+
+            return Response({'detail': 'Student updated successfully'}, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        
+
     @action(detail=True, methods=['PUT'], name='change_user_password', url_path=r'password/change', serializer_class=PasswordChangeSerializer)
     def change_user_password(self, request, pk, *args, **kwargs):
         serializer = PasswordChangeSerializer(data=request.data)
@@ -78,5 +103,41 @@ class UserViewSet(viewsets.ModelViewSet):
             update_session_auth_hash(request, user)  # Keep the user authenticated
 
             return Response({'detail': 'Password successfully changed.'}, status=status.HTTP_200_OK)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+    @action(detail=True, methods=['POST'], name='reset_user_password', url_path=r'reset-password', serializer_class=PasswordResetSerializer)
+    def reset_password(self, request, pk, *args, **kwargs):
+        serializer = PasswordResetSerializer(data=request.data)
+        if serializer.is_valid():
+            # set token
+            data = serializer.data
+            user = User.objects.filter(username=data.get('email')).first()
+            token, created = Token.objects.get_or_create(user=user)
+            # send email token
+            context = {
+                'user': user, 'token':token, 'client_address': settings.CLIENT_ADDRESS
+                }
+            send_html_email(
+                request,
+                'PASSWORD RESET',
+                [user.username],
+                'emails/password-reset.html',
+                context
+                )
+            return Response({'detail': 'A link has been sent to your email. Click the link to reset your password'}, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+    @action(detail=True, methods=['POST'], name='reset_user_password', url_path=r'set-password', serializer_class=SetPasswordSerializer)
+    def set_password(request):
+        serializer = SetPasswordSerializer(data=request.data)
+        if serializer.is_valid():
+            # set token
+            data = serializer.data
+            token = Token.objects.get(key=data['token'])
+            if token:
+                user = token.user
+                user.set_password(data['new_password'])
+                return Response({'detail': 'Your password has been updated'}, status=status.HTTP_200_OK)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

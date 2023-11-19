@@ -24,6 +24,7 @@ SECRET_KEY = 'django-insecure-0o!kzyoe!a=^1cqnf15c$y*z&=2zabt%9&!-@-nd6ztg!^_0o_
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+STAGING = True
 
 ALLOWED_HOSTS = ['*']
 
@@ -144,3 +145,20 @@ CORS_ALLOWED_ORIGINS = [
 DATA_UPLOAD_MAX_MEMORY_SIZE = 26214400
 
 # CKEDITOR_BASEPATH = BASE_DIR / 'staticfiles/ckeditor/ckeditor/'
+
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'samit.notification@gmail.com'
+EMAIL_HOST_PASSWORD = 'disnhnwrjriwltrm'
+
+REST_FRAMEWORK = {
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend']
+}
+
+
+
+if STAGING:
+    CLIENT_ADDRESS = 'https://onita-801db.web.app'
+else:
+    CLIENT_ADDRESS = 'http://127.0.0.1:9000'
