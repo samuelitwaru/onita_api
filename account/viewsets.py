@@ -85,7 +85,7 @@ class UserViewSet(viewsets.ModelViewSet):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         
 
-    @action(detail=True, methods=['PUT'], name='change_user_password', url_path=r'password/change', serializer_class=PasswordChangeSerializer)
+    @action(detail=True, methods=['PUT'], name='change_user_password', url_path=r'change-password', serializer_class=PasswordChangeSerializer)
     def change_user_password(self, request, pk, *args, **kwargs):
         serializer = PasswordChangeSerializer(data=request.data)
         if serializer.is_valid():
@@ -128,7 +128,7 @@ class UserViewSet(viewsets.ModelViewSet):
             return Response({'detail': 'A link has been sent to your email. Click the link to reset your password'}, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
-    @action(detail=True, methods=['POST'], name='reset_user_password', url_path=r'set-password', serializer_class=SetPasswordSerializer)
+    @action(detail=True, methods=['POST'], name='set_user_password', url_path=r'set-password', serializer_class=SetPasswordSerializer)
     def set_password(request):
         serializer = SetPasswordSerializer(data=request.data)
         if serializer.is_valid():
