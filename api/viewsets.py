@@ -148,15 +148,25 @@ class StudentAnswerViewSet(viewsets.ModelViewSet):
     @action(detail=False, methods=['GET'], name='submit_answers', url_path=r'submit_answers')
     def submit_answers(self, request, *args, **kwargs):
         params = request.query_params
+        test_id = params.get('question__test')
+        
         answers = StudentAnswer.objects.filter(**params.dict()).all()
-        report = dict()
+        report = {
+            'answers':dict(),
+
+        }
         for answer in answers:
             if report.get(answer.question.id):
-                report[answer.question.id]['answers'].append(answer.choice.is_correct)
+                report['answers'][answer.question.id]['answers'].append(answer.choice.is_correct)
             else:
-                report[answer.question.id] = dict()
-                report[answer.question.id]['answers'] = [answer.choice.is_correct]
-                report[answer.question.id]['question'] = answer.question.text
+                report['answers'][answer.question.id] = dict()
+                report['answers'][answer.question.id]['answers'] = [answer.choice.is_correct]
+                report['answers'][answer.question.id]['question'] = answer.question.text
+        test = Test.objects.get(id=test_id)
+        topic_order = Topic.objects.get(test=test).order
+        next_topic = Topic.objects.filter(order=topic_order+1).first()
+        if next_topic:
+            report['next_topic'] = TopicSerializer(next_topic).data
         return Response(report, status=status.HTTP_200_OK)
         
 
@@ -164,6 +174,12 @@ class StudentTopicProgressViewSet(viewsets.ModelViewSet):
     queryset = StudentTopicProgress.objects.all()
     serializer_class = StudentTopicProgressSerializer
     permission_classes = []
+
+    def get_queryset(self):
+        params = self.request.query_params
+        f = BaseFilter(self.queryset, params)
+        queryset = f.filter()
+        return queryset
 
 
 

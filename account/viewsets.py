@@ -9,9 +9,9 @@ from django.contrib.auth import update_session_auth_hash
 from account.serializers import StudentSerializer, TeacherSerializer
 from account.utils.core import get_user_from_bearer_token
 from account.utils.mails import send_html_email
-from api.models import Student
+from api.models import School, Student, Teacher
 from api.serializers import UpdateStudentSerializer
-from .serializers import LoginSerializer, PasswordChangeSerializer, PasswordResetSerializer, ProposalTeamSerializer, SetPasswordSerializer, StudentUserSerializer, TeacherUserSerializer, UserSerializer
+from .serializers import LoginSerializer, PasswordChangeSerializer, PasswordResetSerializer, ProposalTeamSerializer, SchoolSerializer, SetPasswordSerializer, StudentUserSerializer, TeacherUserSerializer, UserSerializer
 # from rest_framework.permissions import IsAuthenticated
 # from .serializers import CustomAuthTokenSerializer
 # from rest_framework.authtoken.views import ObtainAuthToken
@@ -48,10 +48,13 @@ class UserViewSet(viewsets.ModelViewSet):
 
         if user:
             login(request, user)
-            user_data = UserSerializer(user).data
-            user_data['groups'] = [group.name for group in user.groups.all()]
+            # user_data = UserSerializer(user).data
+            # user_data['groups'] = [group.name for group in user.groups.all()]
+            student = StudentSerializer(Student.objects.filter(user=user).first()).data
+            teacher = TeacherSerializer(Teacher.objects.filter(user=user).first()).data
+            school = SchoolSerializer(School.objects.filter(user=user).first()).data
             token, _ = Token.objects.get_or_create(user=user)
-            return Response({'token': token.key, 'user': user_data})
+            return Response({'token': token.key, 'student':student, 'teacher':teacher, 'school':school})
         else:
             return Response({'error': ['Invalid credentials']}, status=status.HTTP_401_UNAUTHORIZED)
 
@@ -64,26 +67,6 @@ class UserViewSet(viewsets.ModelViewSet):
             return Response(student_serilizer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    @action(detail=True, methods=['PUT'], name='update_student', url_path=r'student', serializer_class=UpdateStudentSerializer)
-    def update_student_user(self, request, pk, *args, **kwargs):
-        serializer = UpdateStudentSerializer(data=request.data)
-        if serializer.is_valid():
-            data = serializer.validated_data
-            user = User.objects.get(id=pk)
-            student = Student.objects.filter(user=user).first()
-            user.first_name = data['first_name']
-            user.last_name = data['last_name']
-            user.last_name = data['last_name']
-            user.email = data['email']
-            user.username = data['email']
-            student.telephone = data['telephone']
-            student.full_name = f'{data["first_name"]} {data["last_name"]}'
-            user.save()
-            student.save()
-
-            return Response({'detail': 'Student updated successfully'}, status=status.HTTP_200_OK)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        
 
     @action(detail=True, methods=['PUT'], name='change_user_password', url_path=r'change-password', serializer_class=PasswordChangeSerializer)
     def change_user_password(self, request, pk, *args, **kwargs):
@@ -141,3 +124,24 @@ class UserViewSet(viewsets.ModelViewSet):
                 return Response({'detail': 'Your password has been updated'}, status=status.HTTP_200_OK)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    # @action(detail=True, methods=['PUT'], name='update_student', url_path=r'student', serializer_class=UpdateStudentSerializer)
+    # def update_student_user(self, request, pk, *args, **kwargs):
+    #     serializer = UpdateStudentSerializer(data=request.data)
+    #     if serializer.is_valid():
+    #         data = serializer.validated_data
+    #         user = User.objects.get(id=pk)
+    #         student = Student.objects.filter(user=user).first()
+    #         user.first_name = data['first_name']
+    #         user.last_name = data['last_name']
+    #         user.last_name = data['last_name']
+    #         user.email = data['email']
+    #         user.username = data['email']
+    #         student.telephone = data['telephone']
+    #         student.full_name = f'{data["first_name"]} {data["last_name"]}'
+    #         user.save()
+    #         student.save()
+
+    #         return Response({'detail': 'Student updated successfully'}, status=status.HTTP_200_OK)
+    #     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        

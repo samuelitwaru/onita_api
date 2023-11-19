@@ -1,6 +1,9 @@
 from django.db import models
 from quiz.models import Choice, Test, Question as QuizQuestion
-
+from django.dispatch import receiver
+import os
+from django.db.models.signals import pre_save, post_save, post_delete, pre_delete
+from django.dispatch import receiver
 
 
 class LearningCenter(models.Model):
@@ -30,10 +33,18 @@ class Subject(models.Model):
         pass
 
 class Topic(models.Model):
+
+    def get_next_topic_order():
+        last_topic = Topic.objects.last()
+        if last_topic:
+            return last_topic.order
+        return 1
+    
     name = models.CharField(max_length=128)  # Field name made lowercase.
     subject = models.ForeignKey(Subject, models.DO_NOTHING, related_name='topics')  # Field name made lowercase.
     level = models.ForeignKey(Level, models.DO_NOTHING)  # Field name made lowercase.
     test = models.ForeignKey(Test, models.SET_NULL, null=True)
+    order = models.IntegerField(default=1)
 
     def __str__(self):
         return self.name
@@ -122,7 +133,7 @@ class Student(TimeStampedModel):
     full_name = models.CharField(max_length=128)
     telephone = models.CharField(max_length=16, null=True, blank=True)
     school = models.ForeignKey(School, on_delete=models.SET_NULL, null=True)
-    user = models.OneToOneField("auth.User", on_delete=models.SET_NULL, null=True)
+    user = models.OneToOneField("auth.User", on_delete=models.CASCADE)
     level = models.ForeignKey(Level, on_delete=models.CASCADE)
 
     def __str__(self):
@@ -145,3 +156,17 @@ class StudentTopicProgress(models.Model):
     class Meta:
         unique_together = ('student', 'subject')
     
+
+
+@receiver(post_save, sender=Student)
+def set_student_topic_progresses(sender, instance, created, **kwargs):
+    if created:
+        subjects = instance.level.learning_center.subject_set.all()
+        for subject in subjects:
+            topic = subject.topics.filter(order=1).first()
+            if topic:
+                StudentTopicProgress.objects.create(**{
+                    "student_id": instance.id,
+                    "subject_id": subject.id,
+                    "topic_id": topic.id,
+                })

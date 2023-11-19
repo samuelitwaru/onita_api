@@ -55,7 +55,8 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     "corsheaders.middleware.CorsMiddleware",
-    "django.middleware.common.CommonMiddleware"
+    "django.middleware.common.CommonMiddleware",
+    'middleware.core.ErrorNotificationMiddleware'
 ]
 
 ROOT_URLCONF = 'onita_api.urls'
@@ -135,6 +136,10 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+ADMINS = [
+    ('Samuel Itwaru', 'samuelitwaru@gmail.com'),
+    # Add additional admin email addresses if needed
+]
 
 CORS_ALLOWED_ORIGINS = [
     "https://onita-801db.web.app",
