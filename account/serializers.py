@@ -166,4 +166,8 @@ class UpdateUserSerializer(serializers.Serializer):
     faculty = serializers.IntegerField()
     department = serializers.IntegerField()
     qualification = serializers.IntegerField()
+
+class PasswordChangeSerializer(serializers.Serializer):
+    old_password = serializers.CharField(required=True)
+    new_password = serializers.CharField(required=True)
     

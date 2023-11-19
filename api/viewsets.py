@@ -84,6 +84,26 @@ class StudentViewSet(viewsets.ModelViewSet):
         queryset = f.filter()
         return queryset
 
+    @action(detail=True, methods=['PUT'], name='update_student', url_path=r'update', serializer_class=UpdateStudentSerializer)
+    def update_student(self, request, pk, *args, **kwargs):
+        student = Student.objects.get(id=pk)
+        serializer = UpdateStudentSerializer(request.data)
+        if serializer.is_valid():
+            data = serializer.validated_data
+            user= student.user
+            user.first_name = data['first_name']
+            user.last_name = data['last_name']
+            user.last_name = data['last_name']
+            user.email = data['email']
+            user.username = data['email']
+            student.full_name = f'{data["first_name"]} {data["last_name"]}'
+            user.save()
+            student.save()
+
+            return Response({'detail': 'Student updated successfully'}, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        
+
 class StudentAnswerViewSet(viewsets.ModelViewSet):
     queryset = StudentAnswer.objects.all()
     serializer_class = StudentAnswerSerializer
@@ -130,7 +150,6 @@ class StudentAnswerViewSet(viewsets.ModelViewSet):
         params = request.query_params
         answers = StudentAnswer.objects.filter(**params.dict()).all()
         report = dict()
-        print(answers)
         for answer in answers:
             if report.get(answer.question.id):
                 report[answer.question.id]['answers'].append(answer.choice.is_correct)

@@ -62,7 +62,14 @@ class StudentAnswerSerializer(serializers.ModelSerializer):
 
 
 class StudentTopicProgressSerializer(serializers.ModelSerializer):
+    topic = TopicSerializer(read_only=True)
     class Meta:
         model = StudentTopicProgress
         fields = '__all__'
+
+class UpdateStudentSerializer(serializers.Serializer):
+    first_name = serializers.CharField()
+    last_name = serializers.CharField()
+    phone = serializers.IntegerField()
+    email = serializers.EmailField()
 

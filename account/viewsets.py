@@ -5,9 +5,10 @@
 # views.py
 # from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
-
+from django.contrib.auth import update_session_auth_hash
 from account.serializers import StudentSerializer, TeacherSerializer
-from .serializers import LoginSerializer, ProposalTeamSerializer, StudentUserSerializer, TeacherUserSerializer, UserSerializer
+from account.utils.core import get_user_from_bearer_token
+from .serializers import LoginSerializer, PasswordChangeSerializer, ProposalTeamSerializer, StudentUserSerializer, TeacherUserSerializer, UserSerializer
 # from rest_framework.permissions import IsAuthenticated
 # from .serializers import CustomAuthTokenSerializer
 # from rest_framework.authtoken.views import ObtainAuthToken
@@ -59,11 +60,23 @@ class UserViewSet(viewsets.ModelViewSet):
             return Response(student_serilizer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    # @action(detail=False, methods=['POST'], name='create_teacher_user', url_path=r'teacher/create', serializer_class=TeacherUserSerializer)
-    # def create_teacher_user(self, request, *args, **kwargs):
-    #     serializer = StudentUserSerializer(data=request.data)
-    #     if serializer.is_valid():
-    #         teacher = serializer.create(serializer.validated_data)
-    #         teacher_serilizer = TeacherSerializer(teacher)
-    #         return Response(teacher_serilizer.data, status=status.HTTP_201_CREATED)
-    #     return Response(serializer.error_messages, status=status.HTTP_400_BAD_REQUEST)
+    @action(detail=True, methods=['PUT'], name='change_user_password', url_path=r'password/change', serializer_class=PasswordChangeSerializer)
+    def change_user_password(self, request, pk, *args, **kwargs):
+        serializer = PasswordChangeSerializer(data=request.data)
+        if serializer.is_valid():
+            user = get_user_from_bearer_token(request)
+            old_password = serializer.validated_data['old_password']
+            new_password = serializer.validated_data['new_password']
+
+            # Check if the old password is correct
+            if not user.check_password(old_password):
+                return Response({'detail': 'Old password is incorrect.'}, status=status.HTTP_400_BAD_REQUEST)
+
+            # Change the password and update session authentication hash
+            user.set_password(new_password)
+            user.save()
+            update_session_auth_hash(request, user)  # Keep the user authenticated
+
+            return Response({'detail': 'Password successfully changed.'}, status=status.HTTP_200_OK)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
