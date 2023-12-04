@@ -15,7 +15,7 @@ from dotenv import load_dotenv
 import os
 from distutils.util import strtobool
 
-load_dotenv()
+load_dotenv('.env')
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -29,7 +29,7 @@ SECRET_KEY = 'django-insecure-0o!kzyoe!a=^1cqnf15c$y*z&=2zabt%9&!-@-nd6ztg!^_0o_
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = bool(strtobool(os.getenv('DEBUG')))
-
+print(type(DEBUG))
 STAGING = False
 
 ALLOWED_HOSTS = ['*']
