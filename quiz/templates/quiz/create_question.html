@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% block body %}
+
+<div class='pt-2'>
+	<nav aria-label="breadcrumb">
+		<ol class="breadcrumb">
+		  <li class="breadcrumb-item"><a href="">Home</a></li>
+		  <li class="breadcrumb-item"><a href="{% url 'tests' %}">Tests</a></li>
+		  <li class="breadcrumb-item" aria-current="page">{{test.name}}</li>
+		  <li class="breadcrumb-item active" aria-current="page">Create Question</li>
+		</ol>
+	</nav>
+</div>
+
+<hr class='mb-4'/>
+
+
+
+<form id='createQuestionForm' method='POST' action="">
+          <h5 class="modal-title" id="exampleModalLabel">Add Question</h5>
+            <div class="modal-body">
+            {% csrf_token %}
+            {{ form.media }}
+            {{ form.as_p}}
+          </div>
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-primary">Save changes</button>
+          </div>
+  </form>
+
+{% endblock %}
+
+
+<button type="button" class="btn btn-primary" data-mdb-toggle="modal" onclick="setQuestion({{question.id}})" data-mdb-target="#createChoiceModal">
+    Add Question
+</button>
+
+<form id='createQuestionForm' method='POST' action="">
+    <!-- The Modal -->
+    <div class="modal fade" id="createQuestionModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Add Question</h5>
+          <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            {% csrf_token %}
+            {{ question_form.media }}
+            {{question_form.as_p}}
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-mdb-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary">Save changes</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>

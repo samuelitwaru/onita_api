@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block body %}
+
+<div class='pt-2'>
+	<nav aria-label="breadcrumb">
+		<ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="">Home</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'subjects' %}">Subjects</a></li>
+            {% with subject=subtopic.topic.subject %}
+            <li class="breadcrumb-item"><a href="{% url 'get_subject' id=topic.subject.id %}">{{topic.subject}}</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{{topic}}</li>
+            {% endwith %}
+		</ol>
+	</nav>
+</div>
+
+<hr class='mb-4'/>
+
+<form method="POST">
+    {% csrf_token %}
+    {{ update_topic_form.as_table }}
+    <input class="btn btn-primary" type="submit" value="SAVE">
+</form>
+
+{% endblock %}

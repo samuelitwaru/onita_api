@@ -153,7 +153,6 @@ class StudentAnswerViewSet(viewsets.ModelViewSet):
         answers = StudentAnswer.objects.filter(**params.dict()).all()
         report = {
             'answers':dict(),
-
         }
         for answer in answers:
             if report.get(answer.question.id):
@@ -163,10 +162,19 @@ class StudentAnswerViewSet(viewsets.ModelViewSet):
                 report['answers'][answer.question.id]['answers'] = [answer.choice.is_correct]
                 report['answers'][answer.question.id]['question'] = answer.question.text
         test = Test.objects.get(id=test_id)
-        topic_order = Topic.objects.get(test=test).order
+        topic = Topic.objects.get(test=test)
+        topic_order = topic.order
         next_topic = Topic.objects.filter(order=topic_order+1).first()
+        student_id = answer.student.id
+        print(student_id, topic.id)
+        student_progress = StudentTopicProgress.objects.filter(
+            student_id=student_id,
+            topic_id=topic.id
+            ).first()
+
         if next_topic:
             report['next_topic'] = TopicSerializer(next_topic).data
+            report['student_progress'] = StudentTopicProgressSerializer(student_progress).data
         return Response(report, status=status.HTTP_200_OK)
         
 

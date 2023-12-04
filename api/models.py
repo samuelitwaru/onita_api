@@ -29,22 +29,19 @@ class Subject(models.Model):
     def __str__(self):
         return self.name
 
-    def level_topics(self, level_id):
-        pass
-
 class Topic(models.Model):
 
     def get_next_topic_order():
-        last_topic = Topic.objects.last()
+        last_topic = Topic.objects.order_by('order').last()
         if last_topic:
-            return last_topic.order
+            return last_topic.order + 1
         return 1
     
     name = models.CharField(max_length=128)  # Field name made lowercase.
     subject = models.ForeignKey(Subject, models.DO_NOTHING, related_name='topics')  # Field name made lowercase.
     level = models.ForeignKey(Level, models.DO_NOTHING)  # Field name made lowercase.
     test = models.ForeignKey(Test, models.SET_NULL, null=True)
-    order = models.IntegerField(default=1)
+    order = models.IntegerField(default=get_next_topic_order)
 
     def __str__(self):
         return self.name
@@ -57,8 +54,8 @@ class Subtopic(models.Model):
     content = RichTextField()
     order = models.IntegerField(null=True)
 
-    class Meta:
-        unique_together = (('topic','order'))
+    # class Meta:
+    #     unique_together = (('topic','order'))
     
     def __str__(self):
         return self.name
@@ -170,3 +167,14 @@ def set_student_topic_progresses(sender, instance, created, **kwargs):
                     "subject_id": subject.id,
                     "topic_id": topic.id,
                 })
+
+@receiver(post_save, sender=Subtopic)
+def set_next_subtopic_order(sender, instance, created, **kwargs):
+    if created:
+        topic_id = instance.topic.id
+        last_subtopic = Subtopic.objects.filter(topic_id=topic_id).order_by('order').last()
+        if last_subtopic:
+            instance.order = (last_subtopic.order or 0) + 1
+        else:
+            instance.order = 1
+        instance.save()

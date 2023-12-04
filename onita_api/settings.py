@@ -24,7 +24,7 @@ SECRET_KEY = 'django-insecure-0o!kzyoe!a=^1cqnf15c$y*z&=2zabt%9&!-@-nd6ztg!^_0o_
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-STAGING = True
+STAGING = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -56,8 +56,11 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     "corsheaders.middleware.CorsMiddleware",
     "django.middleware.common.CommonMiddleware",
-    'middleware.core.ErrorNotificationMiddleware'
+    
 ]
+
+if STAGING:
+    MIDDLEWARE.append('middleware.core.ErrorNotificationMiddleware')
 
 ROOT_URLCONF = 'onita_api.urls'
 

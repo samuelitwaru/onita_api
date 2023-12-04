@@ -23,5 +23,8 @@ from .views import *
 urlpatterns = [
     path('subjects/', SubjectList.as_view(), name='subjects'),
     path('subjects/<id>', get_subject, name='get_subject'),
+    path('subjects/<id>/topics/create', create_topic, name='create_topic'),
+    path('subjects/<id>/topics/<topic_id>/update', update_topic, name='update_topic'),
     path('subjects/<id>/topics/<topic_id>/subtopics/<subtopic_id>', get_subtopic, name='get_subtopic'),
+    path('subtopics/create', create_subtopic, name='create_subtopic'),
 ]

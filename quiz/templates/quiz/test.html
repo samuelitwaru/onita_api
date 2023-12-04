@@ -14,35 +14,46 @@
 
 <hr class='mb-4'/>
 
+
+<a href="{% url 'create_question' id=test.id %}">Add Question</a>
+
 <div>
     {% for question in test.question_set.all %}
-    <div class="card my-2">
+    <div class="d-flex align-items-center">
+        <div>{{question.text|safe}}</div>
+        <a href="{% url 'get_question' id=test.id question_id=question.id %}" class='mb-3 px-2'><i class="fa fa-pen-to-square" aria-hidden="true"></i></a>
+    </div>
+    <div class="card mb-3 border shadow-0">
         <div class="card-body">
-            <div class="card-title my-aut d-flex align-items-center">
-                <div>{{question.text|safe}}</div>
-                <a href="{% url 'get_question' id=test.id question_id=question.id %}" class='mb-3 px-2'><i class="fa fa-pen-to-square" aria-hidden="true"></i></a>
-            </div>
-            <table class="table table-sm table-bordered border-dark">
-                <tbody>
-                    {% for choice in question.choices.all %}
-                    <tr>
-                        <td class='d-flex'>
-                            {{choice.text|safe}}
-                        </td>
-                        <td>
-                            <a href="{% url 'get_choice' id=test.id question_id=question.id choice_id=choice.id %}"><i class="fa fa-pencil" aria-hidden="true"></i></a>
-                        </td>
-                        <td>
-                            {% if choice.is_correct %}
-                            <i class="fa fa-check-square" aria-hidden="true"></i>
-                            {% endif %}
-                        </td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+            <ol>
+            {% for choice in question.choices.all %}
+            <li>
+                <a href="{% url 'get_choice' id=test.id question_id=question.id choice_id=choice.id %}">
+                {{choice.text|safe}}
+                {% if choice.is_correct %}
+                <i class="fa fa-check-square" aria-hidden="true"></i>
+                {% endif %}
+                </a>
+                <hr />
+            </li>
+            {% endfor %}
+            </ol>
+
+            {% with question=question choice_form=choice_form %}
+                <button type="button" class="btn btn-primary" data-mdb-toggle="modal" onclick="setQuestion({{question.id}})" data-mdb-target="#createChoiceModal">
+                    Add Choice
+                </button>
+            {% endwith %}
         </div>
     </div>
     {% endfor %}
+    {% include 'quiz/create_choice.html' %}
 </div>
+
+<script>
+    function setQuestion(questionId) {
+        var form = document.getElementById('createChoiceForm')
+        form.action = `/choices/${questionId}/create`
+    }
+</script>
 {% endblock %}

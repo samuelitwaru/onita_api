@@ -23,7 +23,7 @@ class QuestionForm(forms.ModelForm):
 
 class ChoiceForm(forms.ModelForm):
     text = forms.CharField(widget=CKEditorWidget())
-
+    
     class Meta:
         """Meta definition for Choiceform."""
 

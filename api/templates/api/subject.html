@@ -2,7 +2,7 @@
 
 {% block body %}
 
-<div class='pt-2'>
+<div class='pt-2 d-flex justify-content-between'>
 	<nav aria-label="breadcrumb">
 		<ol class="breadcrumb">
 		  <li class="breadcrumb-item"><a href="">Home</a></li>
@@ -10,6 +10,16 @@
 		  <li class="breadcrumb-item active" aria-current="page">{{subject.name}}</li>
 		</ol>
 	</nav>
+    <div>
+        {{filter_by_level_form.level}}
+        <script>
+            var levelInput = document.getElementById("{{ filter_by_level_form.level.id_for_label }}")
+            levelInput.addEventListener("change", function(event){
+                //alert(event.target.value)
+                window.location.href = "{% url 'get_subject' id=subject.id %}" + `?level=${event.target.value}`
+            })
+        </script>
+    </div>
 </div>
 
 <hr class='mb-4'/>
@@ -23,23 +33,32 @@
         </tr>
         </thead>
         <tbody>
-            {% for topic in subject.topics.all %}
+            {% for topic in topics %}
             <tr>
-                <td scope="row">{{topic.name}} </td>
+                <td scope="row">
+                    <a href="{% url 'update_topic' id=subject.id topic_id=topic.id %}">{{topic.name}}</a>
+                </td>
                 <td>
                     <ul>
                         {% for subtopic in topic.subtopic_set.all %}
                         <li>
-                            <a href="{% url 'get_subtopic' id=subject.id topic_id=topic.id subtopic_id=subtopic.id %}">{{subtopic.name}}</a>
+                            <a href="{% url 'get_subtopic' id=subject.id topic_id=topic.id subtopic_id=subtopic.id %}">[{{subtopic.order}}] {{subtopic.name}}</a>
                         </li>
                         {% endfor %}
+                        {% include 'api/create-subtopic-form.html' with topic=topic %}
                     </ul>
                 </td>
                 <td></td>
             </tr>
             {% endfor %}
-            
         </tbody>
+        <div>
+            {% with level=request.GET.dict.level subject=subject %}
+                {% if level and level != '0' %}
+                    {% include 'api/create-topic-form.html' %}
+                {% endif %}
+            {% endwith %}
+        </div>
 </table>
 
 

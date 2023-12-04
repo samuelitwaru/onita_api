@@ -2,13 +2,21 @@
 
 {% block body %}
 
-<div class='pt-2'>
+<div class='pt-2 d-flex justify-content-between'>
 	<nav aria-label="breadcrumb">
 		<ol class="breadcrumb">
 		  <li class="breadcrumb-item"><a href="">Home</a></li>
 		  <li class="breadcrumb-item active" aria-current="page">Tests</li>
 		</ol>
 	</nav>
+
+	<div>
+		<form method='POST' action="{% url 'create_test' %}">
+			{% csrf_token %}
+			New Test: {{form.name}}
+			<input type='submit' />
+		</form>
+	</div>
 </div>
 
 <hr class='mb-4'/>

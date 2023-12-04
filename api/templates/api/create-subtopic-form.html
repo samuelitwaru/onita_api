@@ -1,0 +1,6 @@
+<form method='POST' action="{% url 'create_subtopic' %}">
+    {% csrf_token %}
+    <input type='text' required placeholder='name' name='name' />
+    <input type='hidden' value='{{topic.id}}' name='topic' />
+    <input type='submit' value='Add' />
+</form>
