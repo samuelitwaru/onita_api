@@ -1,4 +1,4 @@
 Django==4.2.6
 django-filter==23.3
 djangorestframework==3.14.0
-python-dotenv
+django-environ
