@@ -58,6 +58,15 @@ class UserViewSet(viewsets.ModelViewSet):
         else:
             return Response({'error': ['Invalid credentials']}, status=status.HTTP_401_UNAUTHORIZED)
 
+    @action(detail=False, methods=['GET'], name='logout', url_path=r'logout')
+    def logout(self, request, *args, **kwargs):
+        if request.META.get('HTTP_AUTHORIZATION'):
+            _, key = request.META.get('HTTP_AUTHORIZATION').split(' ')
+            token = Token.objects.filter(key=key).first()
+            if token: token.delete()
+        
+        return Response({}, status=status.HTTP_200_OK)
+
     @action(detail=False, methods=['POST'], name='create_student_user', url_path=r'student/create', serializer_class=StudentUserSerializer)
     def create_student_user(self, request, *args, **kwargs):
         serializer = StudentUserSerializer(data=request.data)
