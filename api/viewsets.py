@@ -49,11 +49,6 @@ class SubtopicViewSet(viewsets.ModelViewSet):
         return queryset
 
 
-# class ActivityViewSet(viewsets.ModelViewSet):
-#     queryset = Activity.objects.all()
-#     serializer_class = ActivitySerializer
-#     permission_classes = []
-
 
 class QuestionViewSet(viewsets.ModelViewSet):
     queryset = Question.objects.all()
@@ -87,16 +82,18 @@ class StudentViewSet(viewsets.ModelViewSet):
     @action(detail=True, methods=['PUT'], name='update_student', url_path=r'update', serializer_class=UpdateStudentSerializer)
     def update_student(self, request, pk, *args, **kwargs):
         student = Student.objects.get(id=pk)
-        serializer = UpdateStudentSerializer(request.data)
+        print(request.data)
+        UpdateStudentSerializer()
+        serializer = UpdateStudentSerializer(data=request.data)
         if serializer.is_valid():
             data = serializer.validated_data
-            user= student.user
+            user = student.user
             user.first_name = data['first_name']
-            user.last_name = data['last_name']
             user.last_name = data['last_name']
             user.email = data['email']
             user.username = data['email']
             student.full_name = f'{data["first_name"]} {data["last_name"]}'
+            student.telephone = data["telephone"]
             user.save()
             student.save()
 

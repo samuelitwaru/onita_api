@@ -40,7 +40,7 @@ class Topic(models.Model):
     name = models.CharField(max_length=128)  # Field name made lowercase.
     subject = models.ForeignKey(Subject, models.DO_NOTHING, related_name='topics')  # Field name made lowercase.
     level = models.ForeignKey(Level, models.DO_NOTHING)  # Field name made lowercase.
-    test = models.ForeignKey(Test, models.SET_NULL, null=True)
+    test = models.ForeignKey(Test, models.SET_NULL, null=True, blank=True)
     order = models.IntegerField(default=get_next_topic_order)
 
     def __str__(self):

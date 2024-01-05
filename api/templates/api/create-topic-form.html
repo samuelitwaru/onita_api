@@ -1,8 +1,14 @@
+{% extends "base.html" %}
+
+{% block body %}
+
 <form method='POST' action="{% url 'create_topic' id=subject.id %}">
     {% csrf_token %}
-    <div>New Subject</div>  
-    <input placeholder='name' name='name' type='text'/>
-    <input placeholder='name' name='subject' value='{{subject.id}}' type='hidden'/>
-    <input placeholder='name' name='level' value='{{level}}' type='hidden'/>
-    <input type='submit' value='Add' />
+    <div>New Topic</div>  
+    {{create_topic_form}}
+
+    <input type='submit' />
+
 </form>
+
+{% endblock %}

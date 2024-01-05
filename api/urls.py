@@ -27,4 +27,5 @@ urlpatterns = [
     path('subjects/<id>/topics/<topic_id>/update', update_topic, name='update_topic'),
     path('subjects/<id>/topics/<topic_id>/subtopics/<subtopic_id>', get_subtopic, name='get_subtopic'),
     path('subtopics/create', create_subtopic, name='create_subtopic'),
+    path('subtopics/create', create_subtopic, name='create_subtopic'),
 ]

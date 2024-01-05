@@ -41,15 +41,28 @@ def get_subtopic(request, id, topic_id, subtopic_id):
     return render(request, 'api/subtopic.html', context)
 
 def create_topic(request, id):
+    subject = get_object_or_404(Subject, id=id)
+    create_topic_form = TopicForm()
+    print(dir(create_topic_form.fields['subject']))
+    print((create_topic_form.fields['subject'].initial))
+    create_topic_form.fields['subject'].initial = subject.id
+    create_topic_form.fields['test'].required = False
     if request.method == 'POST':
         data = request.POST
         create_topic_form = TopicForm(request.POST)
         if create_topic_form.is_valid():
-            Topic.objects.create(**create_topic_form.cleaned_data)
+            topic = Topic.objects.create(**create_topic_form.cleaned_data)
+            topic.subject = subject
+            topic.save()
             messages.success(request, 'Topic created')
         else:
             messages.error(request, f'{create_topic_form.errors}')
         return redirect(request.META.get('HTTP_REFERER'))
+    context = {
+        'subject': subject,
+        'create_topic_form': create_topic_form
+    }
+    return render(request, 'api/create-topic-form.html', context)
 
 
 def update_topic(request, id, topic_id):
