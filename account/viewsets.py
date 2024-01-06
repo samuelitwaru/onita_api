@@ -86,9 +86,11 @@ class UserViewSet(viewsets.ModelViewSet):
             new_password = serializer.validated_data['new_password']
 
             # Check if the old password is correct
-            if not user.check_password(old_password):
+            if not user:
+                return Response({'detail': 'Invalid Token'}, status=status.HTTP_400_BAD_REQUEST)
+            if user.check_password(old_password):
                 return Response({'detail': 'Old password is incorrect.'}, status=status.HTTP_400_BAD_REQUEST)
-
+            
             # Change the password and update session authentication hash
             user.set_password(new_password)
             user.save()
