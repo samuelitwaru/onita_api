@@ -98,8 +98,8 @@ class UserViewSet(viewsets.ModelViewSet):
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
-    @action(detail=True, methods=['POST'], name='reset_user_password', url_path=r'reset-password', serializer_class=PasswordResetSerializer)
-    def reset_password(self, request, pk, *args, **kwargs):
+    @action(detail=False, methods=['POST'], name='reset_user_password', url_path=r'reset-password', serializer_class=PasswordResetSerializer)
+    def reset_password(self, request, *args, **kwargs):
         serializer = PasswordResetSerializer(data=request.data)
         if serializer.is_valid():
             # set token
