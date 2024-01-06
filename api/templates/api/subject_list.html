@@ -12,12 +12,13 @@
 </div>
 <hr class='mb-4'/>
 
-<table class="table">
+<table class="table table-bordered">
 	<tbody>
         {% for subject in subjects %}
 		<tr>
 			<td scope="">{{subject.code}}</td>
 			<td scope="row"><a href="{% url 'get_subject' id=subject.id %}">{{subject.name}}</a></td>
+			<td scope="row">{{subject.learning_center}}</a></td>
 		</tr>
         {% endfor %}
 	</tbody>

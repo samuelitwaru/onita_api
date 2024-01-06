@@ -6,6 +6,7 @@ from account.serializers import SchoolSerializer, TeacherSerializer, StudentSeri
 from rest_framework.decorators import api_view, permission_classes, action
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.authtoken.models import Token
 
 class LearningCenterViewSet(viewsets.ModelViewSet):
     queryset = LearningCenter.objects.all()
@@ -82,8 +83,6 @@ class StudentViewSet(viewsets.ModelViewSet):
     @action(detail=True, methods=['PUT'], name='update_student', url_path=r'update', serializer_class=UpdateStudentSerializer)
     def update_student(self, request, pk, *args, **kwargs):
         student = Student.objects.get(id=pk)
-        print(request.data)
-        UpdateStudentSerializer()
         serializer = UpdateStudentSerializer(data=request.data)
         if serializer.is_valid():
             data = serializer.validated_data
@@ -96,8 +95,9 @@ class StudentViewSet(viewsets.ModelViewSet):
             student.telephone = data["telephone"]
             user.save()
             student.save()
-
-            return Response({'detail': 'Student updated successfully'}, status=status.HTTP_200_OK)
+            student = StudentSerializer(student).data
+            token, _ = Token.objects.get_or_create(user=user)
+            return Response({'token': token.key, 'student':student}, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         
 

@@ -12,7 +12,13 @@ class SubjectList(ListView):
     model = Subject
     context_object_name = 'subjects'
     def get_queryset(self) -> QuerySet[Any]:
-        return super().get_queryset()
+        queryset = super().get_queryset()
+        # Implement filtering logic if needed
+        search_query = self.request.GET.get('search', '')
+        if search_query:
+            queryset = queryset.filter(name__icontains=search_query)
+        return queryset
+        # return super().get_queryset()
 
 
 def get_subject(request, id):
