@@ -7,14 +7,14 @@ from django.dispatch import receiver
 
 
 class LearningCenter(models.Model):
-    name = models.CharField(unique=True, max_length=20)  # Field name made lowercase.
+    name = models.CharField(unique=True, max_length=128)  # Field name made lowercase.
 
     def __str__(self):
         return self.name
 
 
 class Level(models.Model):
-    name = models.CharField(max_length=20)  # Field name made lowercase.
+    name = models.CharField(max_length=128)  # Field name made lowercase.
     learning_center = models.ForeignKey(LearningCenter, models.DO_NOTHING)  # Field name made lowercase.
 
     def __str__(self):
@@ -22,9 +22,9 @@ class Level(models.Model):
     
 
 class Subject(models.Model):
-    name = models.CharField(max_length=20)  # Field name made lowercase.
+    name = models.CharField(max_length=128)  # Field name made lowercase.
     learning_center = models.ForeignKey(LearningCenter, models.DO_NOTHING)  # Field name made lowercase.
-    code = models.CharField(max_length=20)  # Field name made lowercase.
+    code = models.CharField(max_length=128)  # Field name made lowercase.
     
     def __str__(self):
         return self.name
@@ -49,7 +49,7 @@ class Topic(models.Model):
 
 class Subtopic(models.Model):
     from ckeditor.fields import RichTextField
-    name = models.CharField(max_length=20)  # Field name made lowercase.
+    name = models.CharField(max_length=128)  # Field name made lowercase.
     topic = models.ForeignKey(Topic, on_delete=models.CASCADE)  # Field name made lowercase. The composite primary key (TopicId, SubTopicId) found, that is not supported. The first column is selected.
     content = RichTextField()
     order = models.IntegerField(null=True)
@@ -84,10 +84,10 @@ class TimeStampedModel(models.Model):
 
 
 class Question(TimeStampedModel):
-    ref = models.CharField(max_length=32)
+    ref = models.CharField(max_length=128)
     level = models.ForeignKey(Level, on_delete=models.CASCADE)
     certificate = models.CharField(max_length=32) # UCE, UACE, PLE
-    examiner = models.CharField(max_length=32) # UNEB
+    examiner = models.CharField(max_length=128) # UNEB
     mark = models.IntegerField()
     number = models.IntegerField()
     paper_code = models.CharField(max_length=16)
