@@ -21,6 +21,9 @@ class SubjectList(ListView):
         # return super().get_queryset()
 
 
+def index(request):
+    return redirect('subjects')
+
 def get_subject(request, id):
     level = request.GET.get('level')
     subject = Subject.objects.get(id=id)

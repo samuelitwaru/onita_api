@@ -21,6 +21,7 @@ from django.urls import path
 from .views import *
 
 urlpatterns = [
+    path('', index, name='index'),
     path('subjects/', SubjectList.as_view(), name='subjects'),
     path('subjects/<id>', get_subject, name='get_subject'),
     path('subjects/<id>/topics/create', create_topic, name='create_topic'),
