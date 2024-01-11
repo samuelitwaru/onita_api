@@ -7,6 +7,9 @@ from rest_framework.decorators import api_view, permission_classes, action
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.authtoken.models import Token
+from django.shortcuts import get_object_or_404
+from utils.helpers import set_student_topic_progresses
+
 
 class LearningCenterViewSet(viewsets.ModelViewSet):
     queryset = LearningCenter.objects.all()
@@ -182,6 +185,12 @@ class StudentTopicProgressViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         params = self.request.query_params
+
+        if 'student' in params:
+            student_id = params.get('student')
+            student = get_object_or_404(Student, pk=student_id)
+            set_student_topic_progresses(student)
+
         f = BaseFilter(self.queryset, params)
         queryset = f.filter()
         return queryset

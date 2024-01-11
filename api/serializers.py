@@ -63,6 +63,7 @@ class StudentAnswerSerializer(serializers.ModelSerializer):
 
 class StudentTopicProgressSerializer(serializers.ModelSerializer):
     topic_detail = TopicSerializer(source='topic',read_only=True)
+    subject_detail = SubjectSerializer(source='subject',read_only=True)
     class Meta:
         model = StudentTopicProgress
         fields = '__all__'

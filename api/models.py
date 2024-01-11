@@ -159,10 +159,11 @@ class StudentTopicProgress(models.Model):
 def set_student_topic_progresses(sender, instance, created, **kwargs):
     if created:
         subjects = instance.level.learning_center.subject_set.all()
+        print(subjects)
         for subject in subjects:
             topic = subject.topics.filter(order=1).first()
             if topic:
-                StudentTopicProgress.objects.create(**{
+                StudentTopicProgress.objects.get_or_create(**{
                     "student_id": instance.id,
                     "subject_id": subject.id,
                     "topic_id": topic.id,
