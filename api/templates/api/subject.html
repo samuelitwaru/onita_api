@@ -38,7 +38,7 @@
             {% for topic in topics %}
             <tr>
                 <td scope="row">
-                    <a href="{% url 'update_topic' id=subject.id topic_id=topic.id %}">{{topic.name}}</a>
+                    {{topic.order}} <a href="{% url 'update_topic' id=subject.id topic_id=topic.id %}">{{topic.name}}</a>
                 </td>
                 <td>
                     <ul>

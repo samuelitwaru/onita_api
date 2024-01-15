@@ -43,6 +43,9 @@ class Topic(models.Model):
     test = models.ForeignKey(Test, models.SET_NULL, null=True, blank=True)
     order = models.IntegerField(default=get_next_topic_order)
 
+    class Meta:
+        unique_together = (('subject','order'))
+
     def __str__(self):
         return self.name
     
@@ -54,8 +57,8 @@ class Subtopic(models.Model):
     content = RichTextField()
     order = models.IntegerField(null=True)
 
-    # class Meta:
-    #     unique_together = (('topic','order'))
+    class Meta:
+        unique_together = (('topic','order'))
     
     def __str__(self):
         return self.name
