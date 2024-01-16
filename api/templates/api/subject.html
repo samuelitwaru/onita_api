@@ -34,9 +34,13 @@
             <th></th>
         </tr>
         </thead>
-        <tbody>
+        <tbody id='topicList'>
             {% for topic in topics %}
             <tr>
+                <td scope="row">
+                    <button class='fa fa-arrow-up' onclick="setTopicOrderUp('topicList', {{topic.id}})"></button>
+                    <button class='fa fa-arrow-down' onclick="setTopicOrderDown('topicList', {{topic.id}})"></button>
+                </td>
                 <td scope="row">
                     {{topic.order}} <a href="{% url 'update_topic' id=subject.id topic_id=topic.id %}">{{topic.name}}</a>
                 </td>

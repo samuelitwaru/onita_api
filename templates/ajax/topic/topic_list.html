@@ -1,0 +1,24 @@
+{% load app_tags %}
+
+{% for topic in topics %}
+    <tr>
+        <td scope="row">
+            <button class='fa fa-arrow-up' onclick="setTopicOrderUp('topicList', {{topic.id}})"></button>
+            <button class='fa fa-arrow-down' onclick="setTopicOrderDown('topicList', {{topic.id}})"></button>
+        </td>
+        <td scope="row">
+            {{topic.order}} <a href="{% reverse_url 'update_topic' id=topic.subject.id topic_id=topic.id %}">{{topic.name}}</a>
+        </td>
+        <td>
+            <ul>
+                {% for subtopic in topic.subtopic_set.all %}
+                <li>
+                    <a href="{% reverse_url 'get_subtopic' id=topic.subject.id topic_id=topic.id subtopic_id=subtopic.id %}">[{{subtopic.order}}] {{subtopic.name}}</a>
+                </li>
+                {% endfor %}
+                {% include 'api/create-subtopic-form.html' with topic=topic %}
+            </ul>
+        </td>
+        <td></td>
+    </tr>
+{% endfor %}
