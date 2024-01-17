@@ -86,6 +86,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'utils.context_processors.host',
             ],
             'libraries': {
                 "app_tags": "templatetags.app_tags"
