@@ -7,6 +7,8 @@ from api.serializers import SubtopicSerializer
 from rest_framework.response import Response
 from rest_framework import status
 
+from utils.templating import render_template
+
 
 class SubtopicViewSet(viewsets.ModelViewSet):
     queryset = Subtopic.objects.all()
@@ -30,7 +32,9 @@ class SubtopicViewSet(viewsets.ModelViewSet):
             prev_subtopic.save()
             subtopic.order = prev_subtopic.order - 1
             subtopic.save()
-            return Response({'message': 'success'}, status=status.HTTP_200_OK)
+            subtopics = Subtopic.objects.filter(topic=subtopic.topic).all()
+            template = render_template('ajax/subtopic/subtopic_list.html', {'subtopics':subtopics})
+            return Response({'template': template}, status=status.HTTP_200_OK)
         return Response({'message': 'Cannot cannot find previous subtopic'}, status=status.HTTP_400_BAD_REQUEST)
 
     @action(detail=True, methods=['GET'], name='set_subtopic_order_down', url_path=r'set-subtopic-order-down')
@@ -44,6 +48,8 @@ class SubtopicViewSet(viewsets.ModelViewSet):
             next_subtopic.save()
             subtopic.order = next_subtopic.order + 1
             subtopic.save()
-            return Response({'message': 'success'}, status=status.HTTP_200_OK)
+            subtopics = Subtopic.objects.filter(topic=subtopic.topic).all()
+            template = render_template('ajax/subtopic/subtopic_list.html', {'subtopics':subtopics})
+            return Response({'template': template}, status=status.HTTP_200_OK)
         return Response({'message': 'Cannot find next subtopic'}, status=status.HTTP_400_BAD_REQUEST)
         

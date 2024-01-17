@@ -10,10 +10,14 @@
             {{topic.order}} <a href="{% reverse_url 'update_topic' id=topic.subject.id topic_id=topic.id %}">{{topic.name}}</a>
         </td>
         <td>
-            <ul>
+            <ul id='subtopics-{{topic.id}}'>
                 {% for subtopic in topic.subtopic_set.all %}
                 <li>
-                    <a href="{% reverse_url 'get_subtopic' id=topic.subject.id topic_id=topic.id subtopic_id=subtopic.id %}">[{{subtopic.order}}] {{subtopic.name}}</a>
+                    <a href="{% reverse_url 'get_subtopic' id=topic.subject.id topic_id=topic.id subtopic_id=subtopic.id %}">
+                        [{{subtopic.order}}] {{subtopic.name}}
+                    </a>
+                    <button class='fa fa-arrow-up' onclick="setSubtopicOrderUp('subtopics-{{subtopic.topic.id}}', {{subtopic.id}})"></button>
+                    <button class='fa fa-arrow-down' onclick="setSubtopicOrderDown('subtopics-{{subtopic.topic.id}}', {{subtopic.id}})"></button>
                 </li>
                 {% endfor %}
                 {% include 'api/create-subtopic-form.html' with topic=topic %}

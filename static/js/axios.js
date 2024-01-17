@@ -24,3 +24,23 @@ const setTopicOrderDown = (containerId, topicId) => {
         }
     })
 }
+
+const setSubtopicOrderUp = (containerId, subtopicId) => {
+    axios
+    .get(`/api/subtopics/${subtopicId}/set-subtopic-order-up`)
+    .then(res=>{
+        if (res.status == 200) {
+            render(containerId, res.data.template)
+        }
+    })
+}
+
+const setSubtopicOrderDown = (containerId, subtopicId) => {
+    axios
+    .get(`/api/subtopics/${subtopicId}/set-subtopic-order-down`)
+    .then(res=>{
+        if (res.status == 200) {
+            render(containerId, res.data.template)
+        }
+    })
+}

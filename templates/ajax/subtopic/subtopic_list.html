@@ -1,0 +1,12 @@
+{% load app_tags %}
+
+{% for subtopic in subtopics %}
+<li>
+    <a href="{% reverse_url 'get_subtopic' id=subtopic.topic.subject.id topic_id=subtopic.topic.id subtopic_id=subtopic.id %}">
+        [{{subtopic.order}}] {{subtopic.name}}
+    </a>
+    <button class='fa fa-arrow-up' onclick="setSubtopicOrderUp('subtopics-{{subtopic.topic.id}}', {{subtopic.id}})"></button>
+    <button class='fa fa-arrow-down' onclick="setSubtopicOrderDown('subtopics-{{subtopic.topic.id}}', {{subtopic.id}})"></button>
+</li>
+{% endfor %}
+{% include 'api/create-subtopic-form.html' with topic=subtopic.topic %}

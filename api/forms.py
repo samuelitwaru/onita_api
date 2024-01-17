@@ -22,4 +22,4 @@ class TopicForm(forms.ModelForm):
 
 
 class FilterByLevelForm(forms.Form):
-    level = forms.ChoiceField(choices=[(level.id, level.name) for level in Level.objects.all()])
+    level = forms.ChoiceField(choices=[(0, 'All Levels')]+[(level.id, level.name) for level in Level.objects.all()])
