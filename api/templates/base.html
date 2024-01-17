@@ -6,10 +6,6 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta http-equiv="x-ua-compatible" content="ie=edge" />
         <title>ONITA</title>
-
-		{% comment %} <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}">
-		<link rel="stylesheet" type="text/css" href="{% static 'css/tempusdominus-bootstrap-4.min.css' %}">
-		<link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}"> {% endcomment %}
 		<link
 			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
 			rel="stylesheet"
@@ -102,5 +98,8 @@
         <!-- Custom scripts -->
         <script type="text/javascript"></script>
         <script type="text/javascript" src="{% static 'js/axios.js' %}"></script>
+		<script>
+			const BASE_URL = `{{ request.build_absolute_uri }}/api`;
+		</script>
 	</body>
 </html>
