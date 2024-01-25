@@ -40,6 +40,12 @@ class SubjectSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class TransactionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Transaction
+        fields = '__all__'
+
+
 
 
 # class ActivitySerializer(serializers.ModelSerializer):

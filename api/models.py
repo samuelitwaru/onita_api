@@ -155,7 +155,14 @@ class StudentTopicProgress(models.Model):
 
     class Meta:
         unique_together = ('student', 'subject')
-    
+
+
+class Transaction(models.Model):
+    TYPE_CHOICES = [('C', 'CREDIT'), ('D', 'DEBIT')]
+    user = models.ForeignKey("auth.User", on_delete=models.CASCADE)
+    amount = models.IntegerField()
+    type = models.CharField(max_length=8, choices=TYPE_CHOICES)
+    description = models.TextField()
 
 
 @receiver(post_save, sender=Student)

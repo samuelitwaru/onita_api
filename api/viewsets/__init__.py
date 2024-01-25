@@ -8,3 +8,4 @@ from .school import *
 from .student import *
 from .student_answer import *
 from .student_topic_progress import *
+from .transaction import *

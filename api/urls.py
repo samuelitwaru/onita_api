@@ -15,6 +15,7 @@ router.register(r'schools', SchoolViewSet)
 router.register(r'students', StudentViewSet)
 router.register(r'student-answers', StudentAnswerViewSet)
 router.register(r'student-topic-progresses', StudentTopicProgressViewSet)
+router.register(r'transactions', TransactionViewSet)
 
 
 from django.urls import path
