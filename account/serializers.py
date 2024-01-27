@@ -5,6 +5,7 @@ from django.contrib.auth import authenticate
 from rest_framework.authtoken.serializers import AuthTokenSerializer
 from api.models import Level, School, Student, Teacher
 from api.serializers import LevelSerializer
+from utils.helpers import LEVEL_CHOICES
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -46,7 +47,7 @@ class StudentUserSerializer(serializers.Serializer):
     last_name = serializers.CharField()
     telephone = serializers.CharField()
     email = serializers.EmailField()
-    level = serializers.ChoiceField(choices=[(level.id, level.name) for level in Level.objects.all()])
+    level = serializers.ChoiceField(choices=LEVEL_CHOICES)
     password = serializers.CharField(required=True)
     confirm_password = serializers.CharField(required=True)
 

@@ -90,5 +90,15 @@
               "name": "English",
               "learning_center": 2
             }
+        },
+
+        {
+          "model": "api.subject",
+          "pk": 10,
+          "fields": {
+            "code": "P530/1",
+            "name": "Biology",
+            "learning_center": 3
+          }
         }
   ]

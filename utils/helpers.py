@@ -1,4 +1,14 @@
-from api.models import Student, StudentTopicProgress
+from api.models import Student, StudentTopicProgress, Level
+from django.db.utils import OperationalError
+
+def get_level_choices():
+    try:
+        return [(level.id, level.name) for level in Level.objects.all()]
+    except OperationalError:
+        return []
+
+LEVEL_CHOICES = get_level_choices()
+
 
 
 def set_student_topic_progresses(student):
@@ -13,3 +23,4 @@ def set_student_topic_progresses(student):
                 "subject_id": subject.id,
                 "topic_id": topic.id,
             })
+

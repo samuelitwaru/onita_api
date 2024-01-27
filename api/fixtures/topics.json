@@ -1,11 +1,32 @@
 [
-    {
-      "model": "api.topic",
-      "pk": 1,
-      "fields": {
-        "name": "Set Concepts",
-        "subject": 1,
-        "level": 1
-      }
-    }
-  ]
+  {
+    "model": "api.topic",
+    "pk": 1,
+    "fields": { "name": "CELL BIOLOGY", "subject": 10, "level": 5 }
+  },
+  {
+    "model": "api.topic",
+    "pk": 2,
+    "fields": { "name": "CHEMICALS OF LIFE", "subject": 10, "level": 5 }
+  },
+  {
+    "model": "api.topic",
+    "pk": 3,
+    "fields": { "name": "NUTRITION", "subject": 10, "level": 5 }
+  },
+  {
+    "model": "api.topic",
+    "pk": 4,
+    "fields": { "name": "GASEOUS EXCHANGE.", "subject": 10, "level": 5 }
+  },
+  {
+    "model": "api.topic",
+    "pk": 5,
+    "fields": { "name": "RESPIRATION", "subject": 10, "level": 5 }
+  },
+  {
+    "model": "api.topic",
+    "pk": 6,
+    "fields": { "name": "HOMEOSTASIS", "subject": 10, "level": 5 }
+  }
+]

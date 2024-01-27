@@ -1,0 +1,126 @@
+[
+    {
+      "model": "api.subtopic",
+      "pk": 1,
+      "fields": {
+        "topic": 1,
+        "name": "Where Life's Building Blocks Meet the Big Questions"
+      }
+    },
+    {
+      "model": "api.subtopic",
+      "pk": 2,
+      "fields": { "topic": 1, "name": "Unveiling Life's Secrets" }
+    },
+    {
+      "model": "api.subtopic",
+      "pk": 3,
+      "fields": { "topic": 1, "name": "Cell Structure" }
+    },
+    {
+      "model": "api.subtopic",
+      "pk": 4,
+      "fields": { "topic": 1, "name": "Specialized Cells and Tissues" }
+    },
+    {
+      "model": "api.subtopic",
+      "pk": 5,
+      "fields": { "topic": 1, "name": "Chromosomes" }
+    },
+    {
+      "model": "api.subtopic",
+      "pk": 6,
+      "fields": { "topic": 1, "name": "Cell Division" }
+    },
+    {
+      "model": "api.subtopic",
+      "pk": 7,
+      "fields": { "topic": 1, "name": "Protein Synthesis" }
+    },
+    {
+      "model": "api.subtopic",
+      "pk": 8,
+      "fields": { "topic": 2, "name": "ACIDS, BASES AND SALTS" }
+    },
+    {
+      "model": "api.subtopic",
+      "pk": 9,
+      "fields": { "topic": 2, "name": "WATER" }
+    },
+    {
+      "model": "api.subtopic",
+      "pk": 10,
+      "fields": { "topic": 2, "name": "Carbohydrates" }
+    },
+    {
+      "model": "api.subtopic",
+      "pk": 11,
+      "fields": { "topic": 2, "name": "Lipids" }
+    },
+    {
+      "model": "api.subtopic",
+      "pk": 12,
+      "fields": { "topic": 2, "name": "Proteins" }
+    },
+    {
+      "model": "api.subtopic",
+      "pk": 13,
+      "fields": { "topic": 2, "name": "Vitamins" }
+    },
+    {
+      "model": "api.subtopic",
+      "pk": 14,
+      "fields": { "topic": 3, "name": "AUTOTROPHIC NUTRITION." }
+    },
+    {
+      "model": "api.subtopic",
+      "pk": 15,
+      "fields": { "topic": 3, "name": "HETEROTROPHIC NUTRITION" }
+    },
+    {
+      "model": "api.subtopic",
+      "pk": 16,
+      "fields": { "topic": 4, "name": "Specialised gaseous exchange surfaces" }
+    },
+    {
+      "model": "api.subtopic",
+      "pk": 17,
+      "fields": { "topic": 4, "name": "Control of ventilation rate in insects" }
+    },
+    {
+      "model": "api.subtopic",
+      "pk": 18,
+      "fields": { "topic": 4, "name": "Gaseous exchange in Bony fish" }
+    },
+    {
+      "model": "api.subtopic",
+      "pk": 19,
+      "fields": { "topic": 4, "name": "Gaseous exchange in man" }
+    },
+    {
+      "model": "api.subtopic",
+      "pk": 20,
+      "fields": { "topic": 4, "name": "Gaseous exchange in plants" }
+    },
+    {
+      "model": "api.subtopic",
+      "pk": 21,
+      "fields": { "topic": 5, "name": "Aerobic respiration." }
+    },
+    {
+      "model": "api.subtopic",
+      "pk": 22,
+      "fields": { "topic": 5, "name": "Anaerobic respiration" }
+    },
+    {
+      "model": "api.subtopic",
+      "pk": 23,
+      "fields": { "topic": 6, "name": "GENERAL PRINCIPLES OF HOMEOSTASIS" }
+    },
+    {
+      "model": "api.subtopic",
+      "pk": 24,
+      "fields": { "topic": 6, "name": "The homeostatic control of glucose." }
+    }
+  ]
+  

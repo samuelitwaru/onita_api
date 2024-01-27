@@ -2,6 +2,7 @@ from ckeditor.widgets import CKEditorWidget
 from django import forms
 
 from api.models import Level, Subject, Subtopic, Topic
+from utils.helpers import LEVEL_CHOICES
 
 class SubtopicForm(forms.Form):
     name = forms.CharField()
@@ -22,4 +23,4 @@ class TopicForm(forms.ModelForm):
 
 
 class FilterByLevelForm(forms.Form):
-    level = forms.ChoiceField(choices=[(0, 'All Levels')]+[(level.id, level.name) for level in Level.objects.all()])
+    level = forms.ChoiceField(choices=[(0, 'All Levels')]+LEVEL_CHOICES)
