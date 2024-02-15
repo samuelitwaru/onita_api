@@ -16,7 +16,7 @@ from .serializers import LoginSerializer, PasswordChangeSerializer, PasswordRese
 # from .serializers import CustomAuthTokenSerializer
 # from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework import viewsets
-from rest_framework.decorators import api_view, permission_classes, action
+from rest_framework.decorators import action
 # from django_filters.rest_framework import DjangoFilterBackend
 # from django.conf import settings
 # from account.filters import UserFilter
