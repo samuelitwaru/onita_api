@@ -22,7 +22,7 @@ class UserViewSet(viewsets.ModelViewSet):
         queryset = f.filter()
         return queryset
     
-    @action(detail=False, methods=['POST','GET'], name='login', url_path=r'login', serializer_class=LoginSerializer)
+    @action(detail=False, methods=['POST'], name='login', url_path=r'login', serializer_class=LoginSerializer)
     def login(self, request, *args, **kwargs):
         if request.method == 'GET':
             return Response({})
