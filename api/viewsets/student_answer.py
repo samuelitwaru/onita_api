@@ -21,8 +21,9 @@ class StudentAnswerViewSet(viewsets.ModelViewSet):
     #     queryset = f.filter()
     #     return queryset
     
-    @action(detail=False, methods=['POST'], name='submit_single_choice_answer', url_path=r'submit_single_choice_answer', serializer_class=StudentAnswerSerializer)
+    @action(detail=False, methods=['POST','GET'], name='submit_single_choice_answer', url_path=r'submit_single_choice_answer', serializer_class=StudentAnswerSerializer)
     def submit_single_choice_answer(self, request, *args, **kwargs):
+        if request.method == 'GET': return Response({})
         serializer = StudentAnswerSerializer(data=request.data)
         if serializer.is_valid():
             data = request.data
@@ -44,8 +45,9 @@ class StudentAnswerViewSet(viewsets.ModelViewSet):
             return Response(answer_serilizer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
-    @action(detail=False, methods=['DELETE'], name='delete_answers', url_path=r'delete_answers')
+    @action(detail=False, methods=['DELETE','GET'], name='delete_answers', url_path=r'delete_answers')
     def delete_answers(self, request, *args, **kwargs):
+        if request.method == 'GET': return Response({})
         params = request.query_params
         answers_to_delete = StudentAnswer.objects.filter(**params.dict())
         answers_to_delete.delete()
