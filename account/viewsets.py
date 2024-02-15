@@ -67,7 +67,7 @@ class UserViewSet(viewsets.ModelViewSet):
         
         return Response({}, status=status.HTTP_200_OK)
 
-    @action(detail=False, methods=['POST'], name='create_student_user', url_path=r'student/create', serializer_class=StudentUserSerializer)
+    @action(detail=False, methods=['POST', 'GET'], name='create_student_user', url_path=r'student/create', serializer_class=StudentUserSerializer)
     def create_student_user(self, request, *args, **kwargs):
         serializer = StudentUserSerializer(data=request.data)
         if serializer.is_valid():
