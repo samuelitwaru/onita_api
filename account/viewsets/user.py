@@ -6,8 +6,9 @@ from rest_framework import status
 from rest_framework.authtoken.models import Token
 from django.contrib.auth import authenticate, login, logout
 from account.filters import BaseFilter
-from account.serializers import LoginSerializer, SchoolSerializer, StudentSerializer, TeacherSerializer, UserSerializer
+from account.serializers import LoginSerializer, SchoolSerializer, StudentSerializer, StudentUserSerializer, TeacherSerializer, TeacherUserSerializer, UserSerializer
 from api.models import School, Student, Teacher
+from api.serializers import StudentAnswerSerializer
 
 
 
@@ -22,10 +23,9 @@ class UserViewSet(viewsets.ModelViewSet):
         queryset = f.filter()
         return queryset
     
-    @action(detail=False, methods=['POST'], name='login', url_path=r'login', serializer_class=LoginSerializer)
+    @action(detail=False, methods=['POST','GET'], name='login', url_path=r'login', serializer_class=LoginSerializer)
     def login(self, request, *args, **kwargs):
-        if request.method == 'GET':
-            return Response({})
+        if request.method == 'GET': return Response({})
         username = request.data.get('username')
         password = request.data.get('password')
         user = authenticate(username=username, password=password)
@@ -50,3 +50,23 @@ class UserViewSet(viewsets.ModelViewSet):
             if token: token.delete()
         
         return Response({}, status=status.HTTP_200_OK)
+    
+    @action(detail=False, methods=['POST','GET'], name='create_student_user', url_path=r'student/create', serializer_class=StudentUserSerializer)
+    def create_student_user(self, request, *args, **kwargs):
+        if request.method == 'GET': return Response({})
+        serializer = StudentAnswerSerializer(data=request.data)
+        if serializer.is_valid():
+            student = serializer.create(serializer.validated_data)
+            student_serilizer = StudentSerializer(student)
+            return Response(student_serilizer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+    @action(detail=False, methods=['POST','GET'], name='create_teacher_user', url_path=r'teacher/create', serializer_class=TeacherUserSerializer)
+    def create_teacher_user(self, request, *args, **kwargs):
+        if request.method == 'GET': return Response({})
+        serializer = TeacherUserSerializer(data=request.data)
+        if serializer.is_valid():
+            teacher = serializer.create(serializer.validated_data)
+            teacher_serilizer = TeacherSerializer(teacher)
+            return Response(teacher_serilizer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
