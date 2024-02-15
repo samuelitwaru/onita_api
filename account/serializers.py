@@ -73,6 +73,36 @@ class StudentUserSerializer(serializers.Serializer):
         )
         student.save()
         return student
+    
+class TeacherUserSerializer(serializers.Serializer):
+    first_name = serializers.CharField()
+    last_name = serializers.CharField()
+    telephone = serializers.CharField()
+    email = serializers.EmailField()
+    password = serializers.CharField(required=True)
+    confirm_password = serializers.CharField(required=True)
+
+    def validate_email(self, value):
+        if User.objects.filter(email=value).first():
+            raise serializers.ValidationError(f"User with the email, '{value}' already exists")
+        return value
+
+    def create(self, validated_data):
+        user = User(
+                first_name=validated_data['first_name'],
+                last_name=validated_data['last_name'],
+                email=validated_data['email'],
+                username=validated_data['email'],
+            )
+        user.set_password(validated_data['password'])
+        user.save()
+        teacher = Teacher(
+            user=user, 
+            telephone=validated_data["telephone"],
+            full_name=f'{validated_data["first_name"]} {validated_data["last_name"]}'
+        )
+        teacher.save()
+        return teacher
 
 class LoginSerializer(serializers.Serializer):
     username = serializers.CharField()

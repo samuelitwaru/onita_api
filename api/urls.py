@@ -10,7 +10,7 @@ router.register(r'topics', TopicViewSet)
 router.register(r'subtopics', SubtopicViewSet)
 # router.register(r'activities', ActivityViewSet)
 
-router.register(r'questions', QuestionViewSet)
+# router.register(r'questions', QuestionViewSet)
 router.register(r'schools', SchoolViewSet)
 router.register(r'students', StudentViewSet)
 router.register(r'student-answers', StudentAnswerViewSet)

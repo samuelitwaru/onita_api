@@ -3,7 +3,8 @@ from quiz.models import Choice, Test, Question as QuizQuestion
 from django.dispatch import receiver
 import os
 from django.db.models.signals import pre_save, post_save, post_delete, pre_delete
-from django.dispatch import receiver
+
+
 
 
 class LearningCenter(models.Model):
@@ -27,7 +28,7 @@ class Subject(models.Model):
     code = models.CharField(max_length=128)  # Field name made lowercase.
     
     def __str__(self):
-        return self.name
+        return f'{self.code} {self.name}'
 
 class Topic(models.Model):
 
@@ -64,20 +65,6 @@ class Subtopic(models.Model):
         return self.name
     
 
-# class Activity(models.Model):
-#     name = models.CharField(max_length=128)  # Field name made lowercase.
-#     date_from = models.DateField()  # Field name made lowercase.
-#     date_to = models.DateField()  # Field name made lowercase.
-#     topic = models.OneToOneField(Subtopic, on_delete=models.CASCADE)  # Field name made lowercase. The composite primary key (TopicId, SubTopicId, ActivityId) found, that is not supported. The first column is selected.
-#     subtopic = models.ForeignKey(Subtopic, on_delete=models.CASCADE, related_name='topicsubtopicactivity_subtopicid_set')  # Field name made lowercase.
-
-#     class Meta:
-#         unique_together = (('topic', 'subtopic'),)
-
-#     def __str__(self):
-#         return self.name
-    
-
 class TimeStampedModel(models.Model):
     created_at = models.DateTimeField(auto_now_add=True, null=True)
     updated_at = models.DateTimeField(auto_now=True, null=True)
@@ -86,27 +73,27 @@ class TimeStampedModel(models.Model):
         abstract = True
 
 
-class Question(TimeStampedModel):
-    ref = models.CharField(max_length=128)
-    level = models.ForeignKey(Level, on_delete=models.CASCADE)
-    certificate = models.CharField(max_length=32) # UCE, UACE, PLE
-    examiner = models.CharField(max_length=128) # UNEB
-    mark = models.IntegerField()
-    number = models.IntegerField()
-    paper_code = models.CharField(max_length=16)
-    paper_name = models.CharField(max_length=16)
-    paper_type = models.CharField(max_length=16)
+# class Question(TimeStampedModel):
+#     ref = models.CharField(max_length=128)
+#     level = models.ForeignKey(Level, on_delete=models.CASCADE)
+#     certificate = models.CharField(max_length=32) # UCE, UACE, PLE
+#     examiner = models.CharField(max_length=128) # UNEB
+#     mark = models.IntegerField()
+#     number = models.IntegerField()
+#     paper_code = models.CharField(max_length=16)
+#     paper_name = models.CharField(max_length=16)
+#     paper_type = models.CharField(max_length=16)
 
-    section = models.CharField(max_length=1)
-    year = models.IntegerField()
+#     section = models.CharField(max_length=1)
+#     year = models.IntegerField()
 
-    term = models.IntegerField()
-    time = models.IntegerField()
-    question = models.TextField()
-    answer = models.TextField()
+#     term = models.IntegerField()
+#     time = models.IntegerField()
+#     question = models.TextField()
+#     answer = models.TextField()
 
-    def __str__(self):
-        return self.ref
+#     def __str__(self):
+#         return self.ref
 
 
 class School(TimeStampedModel):
@@ -122,9 +109,7 @@ class School(TimeStampedModel):
 class Teacher(TimeStampedModel):
     full_name = models.CharField(max_length=128)
     telephone = models.CharField(max_length=16, null=True, blank=True)
-    # schools =
     user = models.ForeignKey("auth.User", on_delete=models.SET_NULL, null=True)
-    # classes = 
 
     def __str__(self):
         return self.full_name

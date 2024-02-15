@@ -19,3 +19,13 @@ class ChoiceViewSet(viewsets.ModelViewSet):
     queryset = Choice.objects.all()
     serializer_class = ChoiceSerializer
     permission_classes = []
+
+class ExamViewSet(viewsets.ModelViewSet):
+    queryset = Exam.objects.order_by('-id').all()
+    serializer_class = ExamSerializer
+    permission_classes = []
+
+class ExamAnswerViewSet(viewsets.ModelViewSet):
+    queryset = ExamAnswer.objects.all()
+    serializer_class = ExamAnswerSerializer
+    permission_classes = []

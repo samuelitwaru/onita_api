@@ -35,6 +35,7 @@ class TopicSerializer(serializers.ModelSerializer):
 
 class SubjectSerializer(serializers.ModelSerializer):
     topics = TopicSerializer(many=True, read_only=True)
+    learning_center_name = serializers.CharField(source='learning_center.name')
     class Meta:
         model = Subject
         fields = '__all__'
@@ -55,10 +56,10 @@ class TransactionSerializer(serializers.ModelSerializer):
 #         fields = '__all__'
 
 
-class QuestionSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Question
-        fields = '__all__'
+# class QuestionSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = Question
+#         fields = '__all__'
 
 
 class StudentAnswerSerializer(serializers.ModelSerializer):

@@ -75,6 +75,16 @@ class UserViewSet(viewsets.ModelViewSet):
             student_serilizer = StudentSerializer(student)
             return Response(student_serilizer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+    @action(detail=False, methods=['POST'], name='create_teacher_user', url_path=r'teacher/create', serializer_class=TeacherUserSerializer)
+    def create_teacher_user(self, request, *args, **kwargs):
+        serializer = TeacherUserSerializer(data=request.data)
+        if serializer.is_valid():
+            teacher = serializer.create(serializer.validated_data)
+            teacher_serilizer = TeacherSerializer(teacher)
+            return Response(teacher_serilizer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 
     @action(detail=True, methods=['PUT'], name='change_user_password', url_path=r'change-password', serializer_class=PasswordChangeSerializer)
