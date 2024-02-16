@@ -11,5 +11,5 @@ class ErrorNotificationMiddleware:
         if response.status_code == 500:
             subject = f"Server Error on {request.get_full_path()}"
             message = f"User: {request.user}\n\n{response.content.decode()}"
-            # mail_admins(subject, message, fail_silently=True)
+            mail_admins(subject, message, fail_silently=True)
         return response

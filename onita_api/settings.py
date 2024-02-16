@@ -70,8 +70,8 @@ MIDDLEWARE = [
     
 ]
 
-if STAGING:
-    MIDDLEWARE.append('middleware.core.ErrorNotificationMiddleware')
+# if STAGING:
+#     MIDDLEWARE.append('middleware.core.ErrorNotificationMiddleware')
 
 ROOT_URLCONF = 'onita_api.urls'
 
