@@ -15,6 +15,12 @@ class QuestionViewSet(viewsets.ModelViewSet):
     serializer_class = QuestionSerializer
     permission_classes = []
 
+    def get_queryset(self):
+        params = self.request.query_params
+        f = BaseFilter(self.queryset, params)
+        queryset = f.filter()
+        return queryset
+
 class ChoiceViewSet(viewsets.ModelViewSet):
     queryset = Choice.objects.all()
     serializer_class = ChoiceSerializer
