@@ -7,6 +7,7 @@ from api.serializers import StudentAnswerSerializer, StudentTopicProgressSeriali
 from rest_framework.response import Response
 from rest_framework import status
 from quiz.models import Choice, Test
+from django.shortcuts import get_object_or_404
 
 
 
@@ -69,12 +70,14 @@ class StudentAnswerViewSet(viewsets.ModelViewSet):
                 report['answers'][answer.question.id] = dict()
                 report['answers'][answer.question.id]['answers'] = [answer.choice.is_correct]
                 report['answers'][answer.question.id]['question'] = answer.question.text
-        test = Test.objects.get(id=test_id)
-        topic = Topic.objects.get(test=test)
+        # test = Test.objects.get(id=test_id)
+        test = get_object_or_404(Test, id=test_id)
+        
+        # topic = Topic.objects.get(test=test)
+        topic = get_object_or_404(Topic, test=test)
         topic_order = topic.order
         next_topic = Topic.objects.filter(order=topic_order+1).first()
         student_id = answer.student.id
-        print(student_id, topic.id)
         student_progress = StudentTopicProgress.objects.filter(
             student_id=student_id,
             topic_id=topic.id
