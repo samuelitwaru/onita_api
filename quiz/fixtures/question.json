@@ -3,7 +3,7 @@
       "model": "quiz.question",
       "pk": 1,
       "fields": {
-        "subject": 10,
+        "subject": 11,
         "text": "What are chromosomes?"
       }
     },
@@ -11,7 +11,7 @@
         "model": "quiz.question",
         "pk": 2,
         "fields": {
-          "subject": 10,
+          "subject": 11,
           "text": "What is the difference between a chromosome and a gene?"
         }
       },
@@ -19,7 +19,7 @@
         "model": "quiz.question",
         "pk": 3,
         "fields": {
-          "subject": 10,
+          "subject": 11,
           "text": "How do chromosomes determine the traits of an organism?"
         }
       },
@@ -27,7 +27,7 @@
         "model": "quiz.question",
         "pk": 4,
         "fields": {
-          "subject": 10,
+          "subject": 11,
           "text": "What are some of the causes of chromosomal disorders?"
         }
       },
@@ -35,7 +35,7 @@
         "model": "quiz.question",
         "pk": 5,
         "fields": {
-          "subject": 10,
+          "subject": 11,
           "text": "How can chromosomal disorders be diagnosed and treated?"
         }
       },
@@ -43,7 +43,7 @@
         "model": "quiz.question",
         "pk": 6,
         "fields": {
-          "subject": 10,
+          "subject": 11,
           "text": "What are some of the causes of chromosomal disorders?"
         }
       }
