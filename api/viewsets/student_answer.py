@@ -54,37 +54,38 @@ class StudentAnswerViewSet(viewsets.ModelViewSet):
         answers_to_delete.delete()
         return Response(status=status.HTTP_200_OK)
     
-    @action(detail=False, methods=['GET'], name='submit_answers', url_path=r'submit_answers')
-    def submit_answers(self, request, *args, **kwargs):
-        params = request.query_params
-        test_id = params.get('question__test')
+    # @action(detail=False, methods=['GET'], name='submit_answers', url_path=r'submit_answers')
+    # def submit_answers(self, request, *args, **kwargs):
+    #     params = request.query_params
+    #     test_id = params.get('question__test')
         
-        answers = StudentAnswer.objects.filter(**params.dict()).all()
-        report = {
-            'answers':dict(),
-        }
-        for answer in answers:
-            if report.get(answer.question.id):
-                report['answers'][answer.question.id]['answers'].append(answer.choice.is_correct)
-            else:
-                report['answers'][answer.question.id] = dict()
-                report['answers'][answer.question.id]['answers'] = [answer.choice.is_correct]
-                report['answers'][answer.question.id]['question'] = answer.question.text
-        # test = Test.objects.get(id=test_id)
-        test = get_object_or_404(Test, id=test_id)
+    #     answers = StudentAnswer.objects.filter(**params.dict()).all()
+    #     report = {
+    #         'answers':dict(),
+    #     }
+    #     for answer in answers:
+    #         if report.get(answer.question.id):
+    #             report['answers'][answer.question.id]['answers'].append(answer.choice.is_correct
+    #                                                                     )
+    #         else:
+    #             report['answers'][answer.question.id] = dict()
+    #             report['answers'][answer.question.id]['answers'] = [answer.choice.is_correct]
+    #             report['answers'][answer.question.id]['question'] = answer.question.text
+    #     # test = Test.objects.get(id=test_id)
+    #     test = get_object_or_404(Test, id=test_id)
         
-        # topic = Topic.objects.get(test=test)
-        topic = get_object_or_404(Topic, test=test)
-        topic_order = topic.order
-        next_topic = Topic.objects.filter(order=topic_order+1).first()
-        student_id = answer.student.id
-        student_progress = StudentTopicProgress.objects.filter(
-            student_id=student_id,
-            topic_id=topic.id
-            ).first()
+    #     # topic = Topic.objects.get(test=test)
+    #     topic = get_object_or_404(Topic, test=test)
+    #     topic_order = topic.order
+    #     next_topic = Topic.objects.filter(order=topic_order+1).first()
+    #     student_id = answer.student.id
+    #     student_progress = StudentTopicProgress.objects.filter(
+    #         student_id=student_id,
+    #         topic_id=topic.id
+    #         ).first()
 
-        if next_topic:
-            report['next_topic'] = TopicSerializer(next_topic).data
-            report['student_progress'] = StudentTopicProgressSerializer(student_progress).data
-        return Response(report, status=status.HTTP_200_OK)
+    #     if next_topic:
+    #         report['next_topic'] = TopicSerializer(next_topic).data
+    #         report['student_progress'] = StudentTopicProgressSerializer(student_progress).data
+    #     return Response(report, status=status.HTTP_200_OK)
         
