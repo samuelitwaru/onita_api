@@ -70,8 +70,9 @@ MIDDLEWARE = [
     
 ]
 
-# if STAGING:
-#     MIDDLEWARE.append('middleware.core.ErrorNotificationMiddleware')
+if STAGING:
+    #MIDDLEWARE.append('middleware.core.ErrorNotificationMiddleware')
+    DEBUG = True
 
 ROOT_URLCONF = 'onita_api.urls'
 
@@ -104,7 +105,7 @@ WSGI_APPLICATION = 'onita_api.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR.parent / 'db1.sqlite3',
+        'NAME': BASE_DIR.parent / 'db.sqlite3',
     }
 }
 
