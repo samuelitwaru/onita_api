@@ -58,7 +58,7 @@ class UserViewSet(viewsets.ModelViewSet):
     @action(detail=False, methods=['POST','GET'], name='create_student_user', url_path=r'student/create', serializer_class=StudentUserSerializer)
     def create_student_user(self, request, *args, **kwargs):
         if request.method == 'GET': return Response({})
-        serializer = StudentAnswerSerializer(data=request.data)
+        serializer = StudentUserSerializer(data=request.data)
         if serializer.is_valid():
             student = serializer.create(serializer.validated_data)
             student_serilizer = StudentSerializer(student)
