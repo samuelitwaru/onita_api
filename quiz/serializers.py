@@ -11,7 +11,7 @@ class ChoiceSerializer(serializers.ModelSerializer):
 class QuestionSerializer(serializers.ModelSerializer):
     choices =  ChoiceSerializer(read_only=True, many=True)
     subject_name = serializers.CharField(source='subject.name', read_only=True)
-    is_multiple_choice = serializers.BooleanField()
+    has_multiple_choices = serializers.BooleanField(read_only=True)
     class Meta:
         model = Question
         fields = '__all__'
@@ -29,6 +29,7 @@ class ExamAnswerSerializer(serializers.ModelSerializer):
     question_text = serializers.CharField(source='question.text', read_only=True)
     question_mark = serializers.IntegerField(source='question.mark', read_only=True)
     question_time = serializers.IntegerField(source='question.time', read_only=True)
+    question_detail = QuestionSerializer(source='question', read_only=True)
     # answer_text = serializers.CharField(source='examanswer.answer')
     class Meta:
         model = ExamAnswer

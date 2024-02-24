@@ -31,6 +31,12 @@ class ExamViewSet(viewsets.ModelViewSet):
     serializer_class = ExamSerializer
     permission_classes = []
 
+    def get_queryset(self):
+        params = self.request.query_params
+        f = BaseFilter(self.queryset, params)
+        queryset = f.filter()
+        return queryset
+
 class ExamAnswerViewSet(viewsets.ModelViewSet):
     queryset = ExamAnswer.objects.all()
     serializer_class = ExamAnswerSerializer

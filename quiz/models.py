@@ -24,13 +24,13 @@ class Question(models.Model):
     test = models.ForeignKey(Test, on_delete=models.CASCADE, null=True)
     mark = models.IntegerField(default=1)
     time = models.IntegerField(default=120)
-    # is_multiple_choice
+    is_multiple_choice = models.BooleanField(default=False)
 
     def __str__(self):
         return self.text
     
     @property
-    def is_multiple_choice(self):
+    def has_multiple_choices(self):
         return self.choices.filter(is_correct=True).count() > 1
 
 class Choice(models.Model):
@@ -46,13 +46,15 @@ class Exam(TimestampedModel):
     subject = models.ForeignKey('api.Subject', on_delete=models.CASCADE)
     student = models.ForeignKey('api.Student', on_delete=models.CASCADE)
     name = models.CharField(max_length=128)
-
+    submitted = models.BooleanField(default=False)
 
     
 class ExamAnswer(models.Model):
     exam = models.ForeignKey(Exam, on_delete=models.CASCADE)
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
     answer = models.TextField(null=True, blank=True)
+    score = models.IntegerField(null=True)
+    comment = models.TextField(null=True)
 
 
 @receiver(post_save, sender=Exam)
