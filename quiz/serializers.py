@@ -40,6 +40,8 @@ class ExamSerializer(serializers.ModelSerializer):
     questions = ExamAnswerSerializer(many=True, source='examanswer_set', read_only=True)
     subject_name = serializers.CharField(source='subject.name', read_only=True)
     subject_learning_center_name = serializers.CharField(source='subject.learning_center.name', read_only=True)
+    all_questions_answered = serializers.BooleanField(read_only=True)
+    total_time = serializers.IntegerField(read_only=True)
     class Meta:
         model = Exam
         fields = '__all__'

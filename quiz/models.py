@@ -47,8 +47,26 @@ class Exam(TimestampedModel):
     student = models.ForeignKey('api.Student', on_delete=models.CASCADE)
     name = models.CharField(max_length=128)
     submitted = models.BooleanField(default=False)
+    time_taken = models.IntegerField(default=0)
 
+    @property
+    def all_questions_answered(self):
+        for exam_answer in self.examanswer_set.all():
+            if bool(exam_answer.answer) == False:
+                return False
+        return True
     
+    @property
+    def total_time(self):
+        total = 0
+        for exam_answer in self.examanswer_set.all():
+            total += exam_answer.question.time
+        print(total)
+        return total
+    
+    
+
+
 class ExamAnswer(models.Model):
     exam = models.ForeignKey(Exam, on_delete=models.CASCADE)
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
@@ -59,12 +77,18 @@ class ExamAnswer(models.Model):
 
 @receiver(post_save, sender=Exam)
 def set_exam_questions(sender, instance, created, **kwargs):
-    no_questions = 10
-    questions = Question.objects.filter(subject=instance.subject).order_by('?').all()
-    if len(questions) > no_questions:
-        questions = questions[:no_questions]
-    for question in questions:
-        answer = ExamAnswer(exam=instance, question=question)
-        answer.save()
+    if created:
+        no_questions = 10
+        questions = Question.objects.filter(subject=instance.subject).order_by('?').all()
+        if len(questions) > no_questions:
+            questions = questions[:no_questions]
+        time = 0
+        for question in questions:
+            answer = ExamAnswer(exam=instance, question=question)
+            answer.save()
+            time += question.time
+        instance.time = time
+        instance.save()
+
     
     
