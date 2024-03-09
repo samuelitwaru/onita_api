@@ -69,7 +69,7 @@ MIDDLEWARE = [
     'django_middleware_global_request.middleware.GlobalRequestMiddleware',
     
 ]
-
+STAGING = True
 if STAGING:
     #MIDDLEWARE.append('middleware.core.ErrorNotificationMiddleware')
     DEBUG = True
