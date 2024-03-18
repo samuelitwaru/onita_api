@@ -58,10 +58,10 @@ class Exam(TimestampedModel):
     
     @property
     def total_time(self):
-        total = 0
-        for exam_answer in self.examanswer_set.all():
-            total += exam_answer.question.time
-        print(total)
+        total = 8*3600
+        # for exam_answer in self.examanswer_set.all():
+        #     total += exam_answer.question.time
+        # print(total)
         return total
     
     

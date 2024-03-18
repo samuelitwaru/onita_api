@@ -35,7 +35,7 @@ class TopicSerializer(serializers.ModelSerializer):
 
 class SubjectSerializer(serializers.ModelSerializer):
     topics = TopicSerializer(many=True, read_only=True)
-    learning_center_name = serializers.CharField(source='learning_center.name')
+    learning_center_name = serializers.CharField(source='learning_center.name', read_only=True)
     class Meta:
         model = Subject
         fields = '__all__'
