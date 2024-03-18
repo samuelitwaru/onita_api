@@ -26,7 +26,7 @@ class Subject(models.Model):
     name = models.CharField(max_length=128)  # Field name made lowercase.
     learning_center = models.ForeignKey(LearningCenter, models.DO_NOTHING)  # Field name made lowercase.
     code = models.CharField(max_length=128)  # Field name made lowercase.
-    image = models.ImageField(upload_to=settings.MEDIA_ROOT, null=True)
+    image = models.ImageField(upload_to='../media/', null=True)
     def __str__(self):
         return f'{self.code} {self.name}'
 
