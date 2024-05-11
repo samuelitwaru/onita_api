@@ -9,3 +9,8 @@ from .student import *
 from .student_answer import *
 from .student_topic_progress import *
 from .transaction import *
+from .index import *
+from .teacher_school import *
+from .teacher_subject import *
+from .notes import *
+from .student_notes_log import *

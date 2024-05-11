@@ -1,5 +1,5 @@
 from rest_framework import viewsets
-from account.serializers import StudentSerializer
+from ..serializers import StudentSerializer
 from api.models import Student
 from django.shortcuts import get_object_or_404
 from rest_framework import viewsets

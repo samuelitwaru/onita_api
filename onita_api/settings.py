@@ -49,9 +49,10 @@ INSTALLED_APPS = [
     'django_middleware_global_request',
     'rest_framework',
     'rest_framework.authtoken',
+    'django_filters',
     'ckeditor',
     'api',
-    'quiz',
+    # 'quiz',
     'corsheaders',
 ]
 
@@ -102,9 +103,17 @@ WSGI_APPLICATION = 'onita_api.wsgi.application'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 DATABASES = {
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.sqlite3',
+    #     'NAME': BASE_DIR.parent / 'db1.sqlite3',
+    # },
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR.parent / 'db1.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'onita',
+        'USER': 'root',
+        'PASSWORD': 'bratz123',
+        'HOST': 'localhost',   # Or your MySQL host
+        'PORT': '3306',        # MySQL default port
     }
 }
 

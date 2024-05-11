@@ -6,7 +6,7 @@ from api.models import  Topic
 from api.serializers import StudentAnswerSerializer, StudentTopicProgressSerializer, TopicSerializer
 from rest_framework.response import Response
 from rest_framework import status
-from quiz.models import Choice, Test
+from ..models import Choice, Test
 from django.shortcuts import get_object_or_404
 
 

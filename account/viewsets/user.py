@@ -7,11 +7,11 @@ from rest_framework import status
 from rest_framework.authtoken.models import Token
 from django.contrib.auth import authenticate, login, logout
 from account.filters import BaseFilter
-from account.serializers import LoginSerializer, PasswordChangeSerializer, PasswordResetSerializer, SchoolSerializer, SetPasswordSerializer, StudentSerializer, StudentUserSerializer, TeacherSerializer, TeacherUserSerializer, UserSerializer
+from account.serializers import LoginSerializer, PasswordChangeSerializer, PasswordResetSerializer, SchoolUserSerializer, SetPasswordSerializer, StudentUserSerializer, TeacherUserSerializer, UserSerializer
 from account.utils.core import get_user_from_bearer_token
 from account.utils.mails import send_html_email
 from api.models import School, Student, Teacher
-from api.serializers import StudentAnswerSerializer
+from api.serializers import SchoolSerializer, StudentAnswerSerializer, StudentSerializer, TeacherSerializer
 from django.contrib.auth import update_session_auth_hash
 
 
@@ -73,6 +73,16 @@ class UserViewSet(viewsets.ModelViewSet):
             teacher = serializer.create(serializer.validated_data)
             teacher_serilizer = TeacherSerializer(teacher)
             return Response(teacher_serilizer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    @action(detail=False, methods=['POST','GET'], name='create_school_user', url_path=r'school/create', serializer_class=SchoolUserSerializer)
+    def create_school_user(self, request, *args, **kwargs):
+        if request.method == 'GET': return Response({})
+        serializer = SchoolUserSerializer(data=request.data)
+        if serializer.is_valid():
+            school = serializer.create(serializer.validated_data)
+            school_serilizer = SchoolSerializer(school)
+            return Response(school_serilizer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
     @action(detail=True, methods=['PUT','GET'], name='change_user_password', url_path=r'change-password', serializer_class=PasswordChangeSerializer)

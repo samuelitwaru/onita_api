@@ -20,14 +20,14 @@ from django.conf import settings
 from django.conf.urls.static import static
 from api.urls import *
 from account.urls import *
-from quiz.urls import *
+# from quiz.urls import *
 from . import router
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include(router.urls)),
     path('', include('api.urls')),
-    path('', include('quiz.urls')),
+    # path('', include('quiz.urls')),
     # path('account/', include(router.urls)),
 ]
 

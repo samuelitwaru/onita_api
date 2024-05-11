@@ -4,7 +4,6 @@ from rest_framework import serializers
 from django.contrib.auth import authenticate
 from rest_framework.authtoken.serializers import AuthTokenSerializer
 from api.models import Level, School, Student, Teacher
-from api.serializers import LevelSerializer
 from utils.helpers import LEVEL_CHOICES
 
 
@@ -22,24 +21,7 @@ class UserSerializer(serializers.ModelSerializer):
         return user
 
 
-class SchoolSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = School
-        fields = '__all__'
 
-
-class TeacherSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Teacher
-        fields = '__all__'
-
-
-class StudentSerializer(serializers.ModelSerializer):
-    user = UserSerializer(read_only=True)   
-    level = LevelSerializer(read_only=True)   
-    class Meta:
-        model = Student
-        fields = '__all__'
 
     
 class StudentUserSerializer(serializers.Serializer):
@@ -133,11 +115,29 @@ class TeacherUserSerializer(serializers.Serializer):
         student.save()
         return student
 
-
-class ProposalTeamSerializer(serializers.Serializer):
+class SchoolUserSerializer(serializers.Serializer):
+    name = serializers.CharField()
+    telephone = serializers.CharField()
     email = serializers.EmailField()
+    password = serializers.CharField(required=True)
+    confirm_password = serializers.CharField(required=True)
 
-    
+    def create(self, validated_data):
+        user = User(
+                first_name=validated_data['name'],
+                email=validated_data['email'],
+                username=validated_data['email'],
+            )
+        user.set_password(validated_data['password'])
+        user.save()
+        school = School(
+            user=user, 
+            telephone=validated_data["telephone"],
+            name=validated_data["name"]
+        )
+        school.save()
+        return school
+
 
 class GroupSerializer(serializers.ModelSerializer):
     class Meta:
@@ -168,27 +168,7 @@ class PasswordResetSerializer(serializers.Serializer):
             raise serializers.ValidationError(errors)
         return data
     
-# class CompleteSignupSerializer(serializers.Serializer):
-#     token = serializers.CharField()
-#     first_name = serializers.CharField()
-#     last_name = serializers.CharField()
-#     phone = serializers.IntegerField()
-#     gender = serializers.CharField()
-#     faculty = serializers.IntegerField()
-#     department = serializers.IntegerField()
-#     qualification = serializers.IntegerField()
-#     password = serializers.CharField(required=True)
-#     confirm_password = serializers.CharField(required=True)
-  
 
-#     def validate(self, data):
-#         password = data.get('password')
-#         confirm_password = data.get('confirm_password')
-#         if password != confirm_password:
-#             raise serializers.ValidationError("Passwords do not match.")
-#         return data
-    
-    
 class UpdateUserSerializer(serializers.Serializer):
     token = serializers.CharField()
     first_name = serializers.CharField()
