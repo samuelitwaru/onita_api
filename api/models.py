@@ -1,5 +1,4 @@
 from django.db import models
-# from quiz.models import Choice, Test, Question as QuizQuestion
 from django.dispatch import receiver
 from django.conf import settings
 from django.db import models
@@ -13,7 +12,6 @@ class TimestampedModel(models.Model):
 
     class Meta:
         abstract = True
-
 
 class Question(models.Model):
     subject = models.ForeignKey('api.Subject', on_delete=models.CASCADE)
@@ -30,7 +28,6 @@ class Question(models.Model):
     def has_multiple_choices(self):
         return self.choices.filter(is_correct=True).count() > 1
     
-
 class Exam(TimestampedModel):
     subject = models.ForeignKey('api.Subject', on_delete=models.CASCADE)
     student = models.ForeignKey('api.Student', on_delete=models.CASCADE)
@@ -52,8 +49,7 @@ class Exam(TimestampedModel):
         #     total += exam_answer.question.time
         # print(total)
         return total
-    
-    
+
 class ExamAnswer(models.Model):
     exam = models.ForeignKey(Exam, on_delete=models.CASCADE)
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
@@ -61,13 +57,11 @@ class ExamAnswer(models.Model):
     score = models.IntegerField(null=True)
     comment = models.TextField(null=True)
 
-
 class LearningCenter(models.Model):
     name = models.CharField(unique=True, max_length=128)  # Field name made lowercase.
 
     def __str__(self):
         return self.name
-
 
 class Level(models.Model):
     name = models.CharField(max_length=128)  # Field name made lowercase.
@@ -76,23 +70,20 @@ class Level(models.Model):
     def __str__(self):
         return self.name
     
-
 class Subject(models.Model):
     name = models.CharField(max_length=128)  # Field name made lowercase.
     learning_center = models.ForeignKey(LearningCenter, models.DO_NOTHING)  # Field name made lowercase.
     code = models.CharField(max_length=128)  # Field name made lowercase.
-    image = models.ImageField(upload_to='../media/', null=True)
+    image = models.ImageField(upload_to='subjects/', null=True)
     def __str__(self):
         return f'{self.code} {self.name}'
     
-
 class TimeStampedModel(models.Model):
     created_at = models.DateTimeField(auto_now_add=True, null=True)
     updated_at = models.DateTimeField(auto_now=True, null=True)
 
     class Meta:
         abstract = True
-
 
 class School(TimeStampedModel):
     name = models.CharField(max_length=128)
@@ -103,7 +94,6 @@ class School(TimeStampedModel):
     def __str__(self):
         return self.name
     
-
 class Teacher(TimeStampedModel):
     full_name = models.CharField(max_length=128)
     telephone = models.CharField(max_length=16, null=True, blank=True)
@@ -135,6 +125,7 @@ class Notes(models.Model):
     teacher_subject = models.ForeignKey(TeacherSubject, on_delete=models.CASCADE)
     level = models.ForeignKey(Level, null=True, on_delete=models.SET_NULL)
     introduction = RichTextField(default='')
+    is_published = models.BooleanField(default=False)
 
     def __str__(self) -> str:
         return self.title
@@ -164,13 +155,6 @@ class Test(models.Model):
 
 
 class Topic(models.Model):
-
-    # def get_next_topic_order():
-    #     last_topic = Topic.objects.order_by('order').last()
-    #     if last_topic:
-    #         return last_topic.order + 1
-    #     return 1
-    
     name = models.CharField(max_length=128)  # Field name made lowercase.
     introduction = RichTextField(default='')
     notes = models.ForeignKey(Notes, on_delete=models.CASCADE, null=True)
@@ -181,10 +165,8 @@ class Topic(models.Model):
     def __str__(self):
         return self.name
     
-    
 
 class Subtopic(models.Model):
-    from ckeditor.fields import RichTextField
     name = models.CharField(max_length=128)  # Field name made lowercase.
     topic = models.ForeignKey(Topic, on_delete=models.CASCADE)  # Field name made lowercase. The composite primary key (TopicId, SubTopicId) found, that is not supported. The first column is selected.
     content = RichTextField(default='')

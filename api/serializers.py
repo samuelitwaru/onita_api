@@ -168,11 +168,18 @@ class TeacherSchoolSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class StudentNotesLogSerializer(serializers.ModelSerializer):
+    student_name = serializers.CharField(source='student.full_name', read_only=True)
+    topic_detail = TopicSerializer(source='topic', read_only=True)
+    class Meta:
+        model = StudentNotesLog
+        fields = '__all__'
 
 class NotesSerializer(serializers.ModelSerializer):
     topics = TopicSerializer(source='topic_set', many=True, read_only=True)
     subject_detail = SubjectSerializer(source='teacher_subject.subject', read_only=True)
     teacher_detail = TeacherSerializer(source='teacher_subject.teacher', read_only=True)
+    logs = StudentNotesLogSerializer(source='studentnoteslog_set', many=True, read_only=True)
     class Meta:
         model = Notes
         fields = '__all__'
@@ -185,10 +192,5 @@ class TeacherSubjectSerializer(serializers.ModelSerializer):
         model = TeacherSubject
         fields = '__all__'
 
-class StudentNotesLogSerializer(serializers.ModelSerializer):
-    student_name = serializers.CharField(source='student.full_name', read_only=True)
-    topic_detail = TopicSerializer(source='topic', read_only=True)
-    class Meta:
-        model = StudentNotesLog
-        fields = '__all__'
+
         

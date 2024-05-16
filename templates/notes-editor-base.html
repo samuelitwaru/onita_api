@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+  style="display:flex;height:100%;flex-direction:column;">
+  <head>
+    <meta charset="utf-8" />
+    <title>Notes Editor</title>
+    <base href='../' />
+    <link
+			href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.2/mdb.min.css"
+			rel="stylesheet"
+		/>
+    <link rel="stylesheet" href="{% static 'richtexteditor/res/style.css' %}" />
+    <link rel="stylesheet" href="{% static 'richtexteditor/richtexteditor/rte_theme_default.css' %}" />
+    <script type="text/javascript" src="{% static 'richtexteditor/richtexteditor/rte.js' %}"></script>
+    <script>RTE_DefaultConfig.url_base='richtexteditor'</script>
+    <script type="text/javascript"
+      src="{% static 'richtexteditor/richtexteditor/plugins/all_plugins.js' %} "></script>
+    <script src="{% static 'js/vue.js' %}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.7.16/dist/vue.js"></script>
+    <script src="{% static 'js/vue-router.js' %}"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+    </head>
+  <body style="padding-bottom:3px;align-items:center">
+    {% block body %}
+    {% endblock %}
+    <script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.2/mdb.min.js"
+        ></script>
+  </body>
+</html>

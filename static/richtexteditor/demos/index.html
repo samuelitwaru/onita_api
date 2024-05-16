@@ -1,0 +1,70 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+  style="display:flex;height:100%;flex-direction:column;">
+  <head>
+    <meta charset="utf-8" />
+    <title>Basic Editor</title>
+    <base href='../' />
+    <link rel="stylesheet" href="res/style.css" />
+    <link rel="stylesheet" href="richtexteditor/rte_theme_default.css" />
+    <script type="text/javascript" src="richtexteditor/rte.js"></script>
+    <script>RTE_DefaultConfig.url_base='richtexteditor'</script>
+    <script type="text/javascript"
+      src='richtexteditor/plugins/all_plugins.js'></script>
+  </head>
+  <body style="padding-bottom:3px;align-items:center">
+    <div id='app'>{{message}}</div>
+    <div>
+      <div class="topbanner">
+        <div
+          style="align-self:stretch;width:960px;display:flex; flex-direction: row;">
+          <div style="flex:99999">
+            <label>RichTextEditor Demo</label>
+          </div>
+          <div>
+            <a target="_blank" href="https://richtexteditor.com/">Home</a>
+            &nbsp;
+            <a target="_blank"
+              href="https://richtexteditor.com/pricing.aspx">Pricing</a>
+          </div>
+        </div>
+      </div>
+      <div style="margin:auto;padding:12px 6px 36px;max-width:960px;">
+
+        <h2>Basic Example</h2>
+        <p class="mb-4">
+          This example contains the buttons needed for the most common use
+          cases.
+        </p>
+        <div class="hs-docs-content-divider">
+          <!--Include the JS & CSS-->
+          <div id="div_editor1">
+            {{message}}
+          </div>
+        </div>
+      </div>
+    </div>
+    <script>
+      var editor1cfg = {}
+      editor1cfg.toolbar = "basic";
+      var editor1 = new RichTextEditor("#div_editor1", editor1cfg);
+    </script>
+    <script src="res/patch.js"></script>
+
+    <script type="module">
+      import { createApp, ref } from 'https://unpkg.com/vue@3/dist/vue.esm-browser.js'
+
+      createApp({
+        setup() {
+          const message = ref('Hello Vue!')
+          alert()
+          return {
+            message
+          }
+        }
+      }).mount('#app')
+    </script>
+
+  </body>
+</html>

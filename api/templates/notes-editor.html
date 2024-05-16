@@ -1,0 +1,98 @@
+{% extends "notes-editor-base.html" %}
+{% load static %}
+{% block body %}
+
+<div class="container">
+    <div class="row">
+        <div id='app' class="col-md-4" v-if="notes">
+            <h1>{% verbatim %}{{notes.title}}{% endverbatim %}</h1>
+            <div class="accordion" id="accordionExample">
+                <div v-for="topic in notes.topics" class="accordion-item">
+                  <h2 class="accordion-header" :id="`heading${topic.id}`">
+                    <button
+                      data-mdb-collapse-init
+                      class="accordion-button collapsed"
+                      type="button"
+                      data-mdb-toggle="collapse"
+                      :data-mdb-target="`#collapse${topic.id}`"
+                      aria-expanded="true"
+                      :aria-controls="`collapse${topic.id}`"
+                      @click="setTopic(topic)"
+                    >
+                      {% verbatim %}
+                        {{topic.name}}
+                      {% endverbatim %}
+                    </button>
+                  </h2>
+                  <div :id="`collapse${topic.id}`" class="accordion-collapse collapse " aria-labelledby="headingOne" data-mdb-parent="#accordionExample">
+                    <div class="accordion-body">
+                        <div class="list-group list-group-light">
+                            <!-- <button type="button" class="list-group-item list-group-item-action px-3 border-0 active"
+                                aria-current="true">
+                                The current button
+                            </button> -->
+                            <button @click="setSubtopic(subtopic)" v-for="subtopic in topic.subtopics" type="button" class="list-group-item list-group-item-action px-3 border-0">
+                                {% verbatim %}
+                                  {{subtopic.name}}
+                                {% endverbatim %}
+                            </button>
+                        </div>
+                    </div>
+                  </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8" >
+            <h2>Basic Example</h2>
+            <p class="mb-4">
+            This example contains the buttons needed for the most common use
+            cases.
+            </p>
+            <div class="hs-docs-content-divider">
+            <!--Include the JS & CSS-->
+            <div id="div_editor1">
+            </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+  var editor1cfg = {}
+  editor1cfg.toolbar = "basic";
+  var editor1 = new RichTextEditor("#div_editor1", editor1cfg);
+</script>
+<script src="{% static 'richtexteditor/res/patch.js' %}"></script>
+<script src="{% static 'js/axios.js' %}"></script>
+
+<script type="text/javascript">
+    var vue = new Vue({
+        el: '#app',
+        data(){ 
+            return{
+                message: 'Hello',
+                notes:null,
+            }
+        },
+        created() {
+            this.getNotes()
+        },
+        methods: {
+            getNotes(){
+                axios.get(`/api/notes/{{notes_id}}/`).then(res=>{
+                    this.notes = res.data
+                    console.log(this.notes)
+                })
+            },
+            setTopic(topic){
+                editor1.setHTML(topic.introduction)
+            },
+            setSubtopic(subtopic){
+                editor1.setHTML(subtopic.content)
+            },
+            getHTML(){
+                alert(editor1.getHTML())
+            }
+        },
+    })
+</script>
+{% endblock %}

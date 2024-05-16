@@ -27,9 +27,11 @@ router.register(r'topic-question-choices', TopicQuestionChoiceViewSet)
 router.register(r'topic-question-student-answers', TopicQuestionStudentAnswerViewSet)
 
 from django.urls import path
+from .views1 import *
 from .views import *
 
 urlpatterns = [
+    path('notes-editor/<notes_id>', notes_editor),
     path('', index, name='index'),
     path('subjects/', SubjectList.as_view(), name='subjects'),
     path('subjects/<id>', get_subject, name='get_subject'),
