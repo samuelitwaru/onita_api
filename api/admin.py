@@ -6,3 +6,4 @@ from .models import *
 admin.site.register(Subject)
 admin.site.register(Topic)
 admin.site.register(Subtopic)
+admin.site.register(Notes)
