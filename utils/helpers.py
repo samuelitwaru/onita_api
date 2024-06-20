@@ -1,4 +1,4 @@
-from api.models import Student, StudentTopicProgress, Level
+from api.models import Student, StudentNotesProgress, Level
 from django.db.utils import OperationalError, ProgrammingError
 
 def get_level_choices():
@@ -17,7 +17,7 @@ def set_student_topic_progresses(student):
         topic = subject.topics.filter(order=1).first()
         print(subject.id, subject, topic)
         if topic:
-            res = StudentTopicProgress.objects.get_or_create(**{
+            res = StudentNotesProgress.objects.get_or_create(**{
                 "student_id": student.id,
                 "subject_id": subject.id,
                 "topic_id": topic.id,

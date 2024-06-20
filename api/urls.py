@@ -1,4 +1,4 @@
-from onita_api import router
+from onita_api import router, srouter
 
 from .viewsets import *
 
@@ -11,7 +11,7 @@ router.register(r'subtopics', SubtopicViewSet)
 router.register(r'schools', SchoolViewSet)
 router.register(r'students', StudentViewSet)
 router.register(r'student-answers', StudentAnswerViewSet)
-router.register(r'student-topic-progresses', StudentTopicProgressViewSet)
+router.register(r'student-notes-progresses', StudentNotesProgressViewSet)
 router.register(r'transactions', TransactionViewSet)
 router.register(r'tests', TestViewSet)
 router.register(r'test-questions', QuestionViewSet)
@@ -26,13 +26,16 @@ router.register(r'topic-questions', TopicQuestionViewSet)
 router.register(r'topic-question-choices', TopicQuestionChoiceViewSet)
 router.register(r'topic-question-student-answers', TopicQuestionStudentAnswerViewSet)
 
+
+srouter.register(r'learning-centers/(?P<learning_center_id>[^/.]+)/subjects', LearningCenterSubject)
+
 from django.urls import path
 from .views1 import *
 from .views import *
 
 urlpatterns = [
     path('notes-editor/<notes_id>', notes_editor),
-    path('', index, name='index'),
+    # path('', index, name='index'),
     path('subjects/', SubjectList.as_view(), name='subjects'),
     path('subjects/<id>', get_subject, name='get_subject'),
     path('subjects/<id>/topics/create', create_topic, name='create_topic'),
@@ -40,11 +43,11 @@ urlpatterns = [
     path('subjects/<id>/topics/<topic_id>/subtopics/<subtopic_id>', get_subtopic, name='get_subtopic'),
     path('subtopics/create', create_subtopic, name='create_subtopic'),
     path('subtopics/create', create_subtopic, name='create_subtopic'),
-    path('tests/', TestList.as_view(), name='tests'),
-    path('tests/create', create_test, name='create_test'),
-    path('choices/<question_id>/create', create_choice, name='create_choice'),
-    path('tests/<id>', get_test, name='get_test'),
-    path('tests/<id>/questions/create', create_question, name='create_question'),
-    path('tests/<id>/questions/<question_id>', get_question, name='get_question'),
-    path('tests/<id>/questions/<question_id>/choices/<choice_id>', get_choice, name='get_choice'),
+    # path('tests/', TestList.as_view(), name='tests'),
+    # path('tests/create', create_test, name='create_test'),
+    # path('choices/<question_id>/create', create_choice, name='create_choice'),
+    # path('tests/<id>', get_test, name='get_test'),
+    # path('tests/<id>/questions/create', create_question, name='create_question'),
+    # path('tests/<id>/questions/<question_id>', get_question, name='get_question'),
+    # path('tests/<id>/questions/<question_id>/choices/<choice_id>', get_choice, name='get_choice'),
 ]

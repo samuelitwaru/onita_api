@@ -72,7 +72,7 @@ class SubtopicSerializer(serializers.ModelSerializer):
 
 class TopicSerializer(serializers.ModelSerializer):
     subtopics = SubtopicSerializer(many=True, source='subtopic_set', read_only=True)
-    # test = TestSerializer(read_only=True)
+    test_detail = TestSerializer(source='test', read_only=True)
     class Meta:
         model = Topic
         fields = '__all__'
@@ -81,9 +81,11 @@ class TopicSerializer(serializers.ModelSerializer):
 class SubjectSerializer(serializers.ModelSerializer):
     topics = TopicSerializer(many=True, read_only=True)
     learning_center_name = serializers.CharField(source='learning_center.name', read_only=True)
+    
     class Meta:
         model = Subject
         fields = '__all__'
+        # read_only_fields = ('image',)
 
 class LearningCenterSerializer(serializers.ModelSerializer):
     subjects = SubjectSerializer(many=True, source='subject_set', read_only=True)
@@ -105,11 +107,9 @@ class StudentAnswerSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class StudentTopicProgressSerializer(serializers.ModelSerializer):
-    topic_detail = TopicSerializer(source='topic',read_only=True)
-    subject_detail = SubjectSerializer(source='subject',read_only=True)
+class StudentNotesProgressSerializer(serializers.ModelSerializer):
     class Meta:
-        model = StudentTopicProgress
+        model = StudentNotesProgress
         fields = '__all__'
 
 class UpdateStudentSerializer(serializers.Serializer):
@@ -179,7 +179,7 @@ class NotesSerializer(serializers.ModelSerializer):
     topics = TopicSerializer(source='topic_set', many=True, read_only=True)
     subject_detail = SubjectSerializer(source='teacher_subject.subject', read_only=True)
     teacher_detail = TeacherSerializer(source='teacher_subject.teacher', read_only=True)
-    logs = StudentNotesLogSerializer(source='studentnoteslog_set', many=True, read_only=True)
+    logs = StudentNotesProgressSerializer(source='studentnotesprogress_set', many=True, read_only=True)
     class Meta:
         model = Notes
         fields = '__all__'
@@ -191,6 +191,10 @@ class TeacherSubjectSerializer(serializers.ModelSerializer):
     class Meta:
         model = TeacherSubject
         fields = '__all__'
+
+class EnrollStudentSerializer(serializers.Serializer):
+    student = serializers.ChoiceField(required=True, choices=[(student.id, student.full_name) for student in Student.objects.all()])
+
 
 
         

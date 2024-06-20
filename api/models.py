@@ -154,6 +154,7 @@ class Test(models.Model):
     name = models.CharField(max_length=128)
 
 
+
 class Topic(models.Model):
     name = models.CharField(max_length=128)  # Field name made lowercase.
     introduction = RichTextField(default='')
@@ -179,13 +180,20 @@ class Subtopic(models.Model):
         return self.name
 
 
-class StudentTopicProgress(models.Model):
+class StudentNotesProgress(models.Model):
     student = models.ForeignKey(Student, on_delete=models.CASCADE)
-    topic = models.ForeignKey(Topic, on_delete=models.CASCADE)
-    status = models.CharField(max_length=64, null=True) # [started, tested, passed]
-
+    notes = models.ForeignKey(Notes, on_delete=models.CASCADE)
+    topic = models.ForeignKey(Topic, on_delete=models.CASCADE, null=True)
+    subtopic = models.ForeignKey(Subtopic, on_delete=models.CASCADE, null=True)
+    test = models.ForeignKey(Test, on_delete=models.CASCADE, null=True)
+    status = models.CharField(max_length=64, null=True)
+    title = models.CharField(max_length=64, default='')
+    content = RichTextField(default='')
+    category = models.CharField(max_length=64, null=True)
+    order = models.IntegerField(default=1)
+    
     class Meta:
-        unique_together = ('student', 'topic')
+        unique_together = ('student', 'notes', 'topic', 'subtopic', 'status')
 
 
 class TopicQuestion(models.Model):
@@ -254,8 +262,9 @@ class Transaction(models.Model):
     description = models.TextField()
 
 
-@receiver(pre_save, sender=Topic)
-def set_topic_order(sender, instance, **kwargs):
+@receiver(post_save, sender=Topic)
+def set_topic_order(sender, instance, created, **kwargs):
+    if not created: return 
     last_topic = Topic.objects.filter(notes=instance.notes).order_by('order').last()
     if last_topic:
         instance.order = last_topic.order + 1

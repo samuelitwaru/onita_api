@@ -6,7 +6,7 @@ from django.contrib import messages
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from django.http import HttpResponseNotFound
-from api.models import Choice, Question, Test
+from api.models import Choice, Question
 
 def notes_editor(request, notes_id):
     context = {'notes_id': notes_id}

@@ -1,7 +1,7 @@
 from django.shortcuts import get_object_or_404, redirect, render
 from rest_framework.decorators import action
 from rest_framework.response import Response
-
+from django.urls import reverse
 from rest_framework import viewsets
 from account.filters import BaseFilter
 from api.models import StudentNotesLog
@@ -43,6 +43,33 @@ class TopicViewSet(viewsets.ModelViewSet):
     permission_classes = []
     filter_backends = [DjangoFilterBackend]
     filterset_fields = '__all__'
+
+    @action(detail=True, methods=['GET'], name='redoreder_subtopics', url_path=r'redoreder-subtopics')
+    def redoreder_subtopics(self, request, pk, *args, **kwargs):
+        topic = get_object_or_404(Topic, pk=pk)
+        subtopics = topic.subtopic_set.order_by('order')
+        order = 1
+        for topic in subtopics:
+            topic.order = order
+            topic.save()
+            order += 1 
+        data = TopicSerializer(topic).data
+        return self.retrieve(request, pk=pk)
+    
+    @action(detail=True, methods=['GET'], name='get_next', url_path=r'get-next')
+    def get_next(self, request, pk, *args, **kwargs):
+        topic = get_object_or_404(Topic, pk=pk)
+        print(topic.order+1)
+        next_topic = get_object_or_404(Topic, notes=topic.notes, order=topic.order+1)
+        data = TopicSerializer(next_topic).data
+        return Response(data, status=200)
+    
+    @action(detail=True, methods=['GET'], name='get_prev', url_path=r'get-prev')
+    def get_prev(self, request, pk, *args, **kwargs):
+        topic = get_object_or_404(Topic, pk=pk)
+        prev_topic = get_object_or_404(Topic, notes=topic.notes, order=topic.order+1)
+        data = TopicSerializer(prev_topic).data
+        return Response(data, status=200)
 
     @action(detail=True, methods=['GET'], name='set_topic_order_up', url_path=r'set-topic-order-up')
     def set_topic_order_up(self, request, pk, *args, **kwargs):
@@ -88,6 +115,18 @@ class SubtopicViewSet(viewsets.ModelViewSet):
         f = BaseFilter(self.queryset, params)
         queryset = f.filter()
         return queryset
+    
+    @action(detail=True, methods=['GET'], name='get_next', url_path=r'get-next')
+    def get_next(self, request, pk, *args, **kwargs):
+        subtopic = get_object_or_404(Subtopic, pk=pk)
+        next_subtopic = get_object_or_404(Subtopic, topic=subtopic.topic, order=subtopic.order+1)
+        return self.retrieve(request, pk=next_subtopic.id)
+
+    @action(detail=True, methods=['GET'], name='get_prev', url_path=r'get-prev')
+    def get_prev(self, request, pk, *args, **kwargs):
+        subtopic = get_object_or_404(Subtopic, pk=pk)
+        prev_subtopic = get_object_or_404(Subtopic, topic=subtopic.topic, order=subtopic.order+1)
+        return self.retrieve(request, pk=prev_subtopic.id)
     
     @action(detail=True, methods=['GET'], name='set_subtopic_order_up', url_path=r'set-subtopic-order-up')
     def set_subtopic_order_up(self, request, pk, *args, **kwargs):
@@ -201,25 +240,12 @@ class StudentAnswerViewSet(viewsets.ModelViewSet):
         answers_to_delete.delete()
         return Response(status=status.HTTP_200_OK)
     
-class StudentTopicProgressViewSet(viewsets.ModelViewSet):
-    queryset = StudentTopicProgress.objects.all()
-    serializer_class = StudentTopicProgressSerializer
+class StudentNotesProgressViewSet(viewsets.ModelViewSet):
+    queryset = StudentNotesProgress.objects.order_by('id')
+    serializer_class = StudentNotesProgressSerializer
     permission_classes = []
     filter_backends = [DjangoFilterBackend]
     filterset_fields = '__all__'
-
-    def get_queryset(self):
-        params = self.request.query_params
-
-        if 'student' in params:
-            student_id = params.get('student')
-            print(student_id)
-            student = get_object_or_404(Student, pk=student_id)
-            set_student_topic_progresses(student)
-
-        f = BaseFilter(self.queryset, params)
-        queryset = f.filter()
-        return queryset    
         
 class TransactionViewSet(viewsets.ModelViewSet):
     queryset = Transaction.objects.all()
@@ -304,6 +330,44 @@ class NotesViewSet(viewsets.ModelViewSet):
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ['teacher_subject', 'teacher_subject__teacher', 'level', 'is_published']
 
+    @action(detail=True, methods=['GET'], name='redorder_topics', url_path=r'reorder-topics')
+    def redoreder_topics(self, request, pk, *args, **kwargs):
+        notes = get_object_or_404(Notes, pk=pk)
+        topics = notes.topic_set.order_by('order')
+        order = 1
+        for topic in topics:
+            topic.order = order
+            topic.save()
+            order += 1
+        data = NotesSerializer(notes).data
+        return Response(data, status=status.HTTP_200_OK)
+    
+    @action(detail=True, methods=['POST', 'GET'], name='enroll_student', url_path=r'enroll-student', serializer_class=EnrollStudentSerializer)
+    def enroll_student(self, request, pk, *args, **kwargs):
+        if request.method == 'POST':
+            student = request.data['student']
+            notes = get_object_or_404(Notes, pk=pk)
+            topics = notes.topic_set.order_by('order')
+            _status = 'STARTED'
+            order = 1
+            for topic in topics:
+                StudentNotesProgress.objects.create(notes_id=notes.id, student_id=student, topic_id=topic.id, content=topic.introduction, category='topic', title=topic.name, status=_status, order=order)
+                order +=1
+                _status = None
+                for subtopic in Subtopic.objects.filter(topic=topic):
+                    StudentNotesProgress.objects.create(notes_id=notes.id, student_id=student, topic_id=topic.id, subtopic_id=subtopic.id, content=subtopic.content, category='subtopic', title=subtopic.name, order=order)
+                    order += 1
+                if topic.test:
+                    StudentNotesProgress.objects.create(notes_id=notes.id, student_id=student, topic_id=topic.id, test_id=topic.test.id, category='test', title='Test', order=order)
+                    order += 1
+            progresses = StudentNotesProgress.objects.all()
+            data = StudentNotesProgressSerializer(progresses, many=True).data
+            
+        else:
+            data = []
+        return Response(data, status=status.HTTP_200_OK)
+       
+
 class StudentNotesLogViewSet(viewsets.ModelViewSet):
     queryset = StudentNotesLog.objects.all()
     serializer_class = StudentNotesLogSerializer
@@ -312,5 +376,16 @@ class StudentNotesLogViewSet(viewsets.ModelViewSet):
     filterset_fields = '__all__'
 
 
+class LearningCenterSubject(viewsets.ModelViewSet):
+    queryset = Subject.objects.all()
+    serializer_class = SubjectSerializer
+    permission_classes = []
+    # filter_backends = [DjangoFilterBackend]
+    # filterset_fields = '__all__'
 
+    def get_queryset(self):
+        return self.queryset.filter(learning_center_id=self.kwargs["learning_center_id"])
 
+    def perform_create(self, serializer):
+        print(serializer)
+        serializer.save(learning_center_id=self.kwargs["learning_center_id"])

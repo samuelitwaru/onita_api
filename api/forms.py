@@ -28,14 +28,14 @@ class FilterByLevelForm(forms.Form):
 
 
 
-class TestForm(forms.ModelForm):
-    """Form definition for Test."""
+# class TestForm(forms.ModelForm):
+#     """Form definition for Test."""
 
-    class Meta:
-        """Meta definition for Testform."""
+#     class Meta:
+#         """Meta definition for Testform."""
 
-        model = Test
-        fields = ('name',)  
+#         model = Test
+#         fields = ('name',)  
 
 
 class QuestionForm(forms.ModelForm):
