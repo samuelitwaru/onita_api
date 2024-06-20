@@ -203,6 +203,19 @@ class StudentViewSet(viewsets.ModelViewSet):
             return Response({'token': token.key, 'student':student}, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+    @action(detail=True, methods=['GET'], name='notes-progresses', url_path=r'notes-progresses')
+    def notes_progresses(self, request, pk, *args, **kwargs):
+        student = get_object_or_404(Student, id=pk)
+        notes = Notes.objects.filter(level=student.level)
+        data = dict()
+        for note in notes:
+            total = StudentNotesProgress.objects.filter(student=student, notes=note).count()
+            complete = StudentNotesProgress.objects.filter(student=student, notes=note, status='COMPLETE').count()
+            progress = round(complete/total * 100)
+            data[note.id] = progress
+        return Response(data, status=status.HTTP_200_OK)
+    
+
 class StudentAnswerViewSet(viewsets.ModelViewSet):
     queryset = StudentAnswer.objects.all()
     serializer_class = StudentAnswerSerializer
@@ -366,7 +379,7 @@ class NotesViewSet(viewsets.ModelViewSet):
         else:
             data = []
         return Response(data, status=status.HTTP_200_OK)
-       
+    
 
 class StudentNotesLogViewSet(viewsets.ModelViewSet):
     queryset = StudentNotesLog.objects.all()
