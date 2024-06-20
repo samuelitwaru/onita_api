@@ -210,7 +210,8 @@ class StudentViewSet(viewsets.ModelViewSet):
         data = dict()
         for note in notes:
             total = StudentNotesProgress.objects.filter(student=student, notes=note).count()
-            complete = StudentNotesProgress.objects.filter(student=student, notes=note, status='COMPLETE').count()
+            complete = StudentNotesProgress.objects.filter(student=student, notes=note, status='COMPLETED').count()
+            print(total, complete)
             progress = round(complete/total * 100)
             data[note.id] = progress
         return Response(data, status=status.HTTP_200_OK)
