@@ -212,7 +212,10 @@ class StudentViewSet(viewsets.ModelViewSet):
             total = StudentNotesProgress.objects.filter(student=student, notes=note).count()
             complete = StudentNotesProgress.objects.filter(student=student, notes=note, status='COMPLETED').count()
             print(total, complete)
-            progress = round(complete/total * 100)
+            if total == 0:
+                progress = 0
+            else:
+                progress = round(complete/total * 100)
             data[note.id] = progress
         return Response(data, status=status.HTTP_200_OK)
     
