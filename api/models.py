@@ -134,7 +134,7 @@ class Notes(models.Model):
 class Student(TimeStampedModel):
     full_name = models.CharField(max_length=128)
     telephone = models.CharField(max_length=16, null=True, blank=True)
-    school = models.ForeignKey(School, on_delete=models.SET_NULL, null=True)
+    school = models.ForeignKey(School, on_delete=models.SET_NULL, null=True, blank=True)
     user = models.OneToOneField("auth.User", on_delete=models.CASCADE)
     level = models.ForeignKey(Level, on_delete=models.CASCADE)
 
