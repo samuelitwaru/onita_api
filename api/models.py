@@ -16,7 +16,7 @@ class TimestampedModel(models.Model):
 class Question(models.Model):
     subject = models.ForeignKey('api.Subject', on_delete=models.CASCADE)
     text = RichTextField()
-    # test = models.ForeignKey(Test, on_delete=models.CASCADE, null=True)
+    # test = models.ForeignKey(Test, on_delete=models.CASCADE, null=True, blank=True)
     mark = models.IntegerField(default=1)
     time = models.IntegerField(default=120)
     is_multiple_choice = models.BooleanField(default=False)
@@ -54,8 +54,8 @@ class ExamAnswer(models.Model):
     exam = models.ForeignKey(Exam, on_delete=models.CASCADE)
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
     answer = models.TextField(null=True, blank=True)
-    score = models.IntegerField(null=True)
-    comment = models.TextField(null=True)
+    score = models.IntegerField(null=True, blank=True)
+    comment = models.TextField(null=True, blank=True)
 
 class LearningCenter(models.Model):
     name = models.CharField(unique=True, max_length=128)  # Field name made lowercase.
@@ -74,13 +74,13 @@ class Subject(models.Model):
     name = models.CharField(max_length=128)  # Field name made lowercase.
     learning_center = models.ForeignKey(LearningCenter, models.DO_NOTHING)  # Field name made lowercase.
     code = models.CharField(max_length=128)  # Field name made lowercase.
-    image = models.ImageField(upload_to='subjects/', null=True)
+    image = models.ImageField(upload_to='subjects/', null=True, blank=True)
     def __str__(self):
         return f'{self.code} {self.name}'
     
 class TimeStampedModel(models.Model):
-    created_at = models.DateTimeField(auto_now_add=True, null=True)
-    updated_at = models.DateTimeField(auto_now=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
+    updated_at = models.DateTimeField(auto_now=True, null=True, blank=True)
 
     class Meta:
         abstract = True
@@ -89,7 +89,7 @@ class School(TimeStampedModel):
     name = models.CharField(max_length=128)
     location = models.CharField(max_length=256)
     telephone = models.CharField(max_length=16, null=True, blank=True)
-    user = models.ForeignKey("auth.User", on_delete=models.SET_NULL, null=True)
+    user = models.ForeignKey("auth.User", on_delete=models.SET_NULL, null=True, blank=True)
 
     def __str__(self):
         return self.name
@@ -97,7 +97,7 @@ class School(TimeStampedModel):
 class Teacher(TimeStampedModel):
     full_name = models.CharField(max_length=128)
     telephone = models.CharField(max_length=16, null=True, blank=True)
-    user = models.ForeignKey("auth.User", on_delete=models.SET_NULL, null=True)
+    user = models.ForeignKey("auth.User", on_delete=models.SET_NULL, null=True, blank=True)
 
     def __str__(self):
         return self.full_name
@@ -123,7 +123,7 @@ class TeacherSubject(models.Model):
 class Notes(models.Model):
     title = models.CharField(max_length=128)
     teacher_subject = models.ForeignKey(TeacherSubject, on_delete=models.CASCADE)
-    level = models.ForeignKey(Level, null=True, on_delete=models.SET_NULL)
+    level = models.ForeignKey(Level, null=True, blank=True, on_delete=models.SET_NULL)
     introduction = RichTextField(default='')
     is_published = models.BooleanField(default=False)
 
@@ -158,8 +158,8 @@ class Test(models.Model):
 class Topic(models.Model):
     name = models.CharField(max_length=128)  # Field name made lowercase.
     introduction = RichTextField(default='')
-    notes = models.ForeignKey(Notes, on_delete=models.CASCADE, null=True)
-    level = models.ForeignKey(Level, models.SET_NULL, null=True)  # Field name made lowercase.
+    notes = models.ForeignKey(Notes, on_delete=models.CASCADE, null=True, blank=True)
+    level = models.ForeignKey(Level, models.SET_NULL, null=True, blank=True)  # Field name made lowercase.
     test = models.ForeignKey(Test, models.SET_NULL, null=True, blank=True)
     order = models.IntegerField(default=1)
 
@@ -183,13 +183,13 @@ class Subtopic(models.Model):
 class StudentNotesProgress(models.Model):
     student = models.ForeignKey(Student, on_delete=models.CASCADE)
     notes = models.ForeignKey(Notes, on_delete=models.CASCADE)
-    topic = models.ForeignKey(Topic, on_delete=models.CASCADE, null=True)
-    subtopic = models.ForeignKey(Subtopic, on_delete=models.CASCADE, null=True)
-    test = models.ForeignKey(Test, on_delete=models.CASCADE, null=True)
-    status = models.CharField(max_length=64, null=True)
+    topic = models.ForeignKey(Topic, on_delete=models.CASCADE, null=True, blank=True)
+    subtopic = models.ForeignKey(Subtopic, on_delete=models.CASCADE, null=True, blank=True)
+    test = models.ForeignKey(Test, on_delete=models.CASCADE, null=True, blank=True)
+    status = models.CharField(max_length=64, null=True, blank=True)
     title = models.CharField(max_length=64, default='')
     content = RichTextField(default='')
-    category = models.CharField(max_length=64, null=True)
+    category = models.CharField(max_length=64, null=True, blank=True)
     order = models.IntegerField(default=1)
     
     class Meta:
@@ -198,7 +198,7 @@ class StudentNotesProgress(models.Model):
 
 class TopicQuestion(models.Model):
     topic = models.ForeignKey(Topic, on_delete=models.CASCADE)
-    test = models.ForeignKey(Test, on_delete=models.SET_NULL, null=True)
+    test = models.ForeignKey(Test, on_delete=models.SET_NULL, null=True, blank=True)
     text = RichTextField()
     mark = models.IntegerField(default=1)
     time = models.IntegerField(default=120)
@@ -210,7 +210,7 @@ class TopicQuestion(models.Model):
 
 
 class Choice(models.Model):
-    question = models.ForeignKey(Question, on_delete=models.SET_NULL, null=True, related_name='choices')
+    question = models.ForeignKey(Question, on_delete=models.SET_NULL, null=True, blank=True, related_name='choices')
     text = RichTextField()
     is_correct = models.BooleanField(default=False)
 
@@ -218,7 +218,7 @@ class Choice(models.Model):
         return self.text
 
 class TopicQuestionChoice(models.Model):
-    topic_question = models.ForeignKey(TopicQuestion, on_delete=models.SET_NULL, null=True, related_name='choices')
+    topic_question = models.ForeignKey(TopicQuestion, on_delete=models.SET_NULL, null=True, blank=True, related_name='choices')
     text = RichTextField()
     is_correct = models.BooleanField(default=False)
 
@@ -237,8 +237,8 @@ class TopicQuestionStudentAnswer(models.Model):
     topic_question = models.ForeignKey(TopicQuestion, on_delete=models.CASCADE)
     student = models.ForeignKey(Student, on_delete=models.CASCADE)
     answer = models.TextField(null=True, blank=True)
-    score = models.IntegerField(null=True)
-    comment = models.TextField(null=True)
+    score = models.IntegerField(null=True, blank=True)
+    comment = models.TextField(null=True, blank=True)
 
     class Meta:
         unique_together = ('topic_question', 'student')
@@ -247,7 +247,7 @@ class TopicQuestionStudentAnswer(models.Model):
 class StudentNotesLog(TimeStampedModel):
     student = models.ForeignKey(Student, on_delete=models.CASCADE)
     notes = models.ForeignKey(Notes, on_delete=models.CASCADE)
-    topic = models.ForeignKey(Topic, on_delete=models.SET_NULL, null=True)
+    topic = models.ForeignKey(Topic, on_delete=models.SET_NULL, null=True, blank=True)
     note = models.CharField(max_length=128)
     
     class Meta:
